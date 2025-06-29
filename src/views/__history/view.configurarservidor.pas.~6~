@@ -1,0 +1,61 @@
+unit view.configurarservidor;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.Imaging.pngimage,
+  Vcl.ExtCtrls, Vcl.Buttons;
+
+type
+  TfrmConfigurarServidor = class(TForm)
+    shpFundo: TShape;
+    pnlTopo: TPanel;
+    pnlConfNovas: TPanel;
+    pnlConfAtuais: TPanel;
+    pnlContainer: TPanel;
+    lblConfServ: TLabel;
+    pnlEntrar: TPanel;
+    btnEntrar: TSpeedButton;
+    pnlCancelar: TPanel;
+    btnCancelar: TSpeedButton;
+    lblTituloNova: TLabel;
+    lblTituloAtual: TLabel;
+    pnlSeparadorNova: TPanel;
+    pnlSeparadorAtual: TPanel;
+    edtNomeServidor: TEdit;
+    edtPorta: TEdit;
+    edtUsuario: TEdit;
+    edtSenha: TEdit;
+    lblNomeServidor: TLabel;
+    lblPorta: TLabel;
+    Label1: TLabel;
+    Label2: TLabel;
+    lblUsuario: TLabel;
+    lblSenha: TLabel;
+    edtBancoDados: TEdit;
+    lblBancoDados: TLabel;
+    edtNomeServidorAtual: TEdit;
+    edtPortaAtual: TEdit;
+    edtUsuarioAtual: TEdit;
+    edtSenhaAtual: TEdit;
+    lblNomeServidorAtual: TLabel;
+    lblPortaAtual: TLabel;
+    lblUsuarioAtual: TLabel;
+    lblSenhaAtual: TLabel;
+    edtBancoDadosAtual: TEdit;
+    lblBancoDadosAtual: TLabel;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmConfigurarServidor: TfrmConfigurarServidor;
+
+implementation
+
+{$R *.dfm}
+
+end.

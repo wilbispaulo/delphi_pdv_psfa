@@ -1,0 +1,97 @@
+unit unit_HMAC;
+
+interface
+
+uses
+  IdHMAC, IdGlobal, System.SysUtils, IdSSLOpenSSL, IdCoderMIME;
+
+type
+  THMAC<T: TIdHMAC, constructor> = class
+  private
+    class function IdBytesOf(aValue: string): TIdBytes;
+    class function HashValue(aKey, aValue: string): TIdBytes;
+  public
+    class function HashValueHexStr(aKey, aValue: string): string;
+    class function HashValueBase64(aKey, aValue: string): string;
+    class function ValidatePassword(aKey, aUser, aValue, aHmacHash: string): Boolean;
+    class function ValidateLicenceKey(aKey, aLicence, aID, aLicKey: string): Boolean;
+  end;
+
+implementation
+
+{ THMAC<T> }
+
+class function THMAC<T>.IdBytesOf(aValue: string): TIdBytes;
+begin
+  aValue := StringReplace(aValue, '\n', '#$A', [rfReplaceAll, rfIgnoreCase]);
+  Result := ToBytes(aValue, IndyTextEncoding_UTF8);
+end;
+
+class function THMAC<T>.ValidateLicenceKey(aKey, aLicence,
+  aID, aLicKey: string): Boolean;
+var
+  hmac        : T;
+  valueHmac   : string;
+  sSubKey     : string;
+  iID         : Integer;
+
+begin
+  iID := StrToIntDef(aID, 0);
+  if (iID > 0) and (iID <= 999) then
+  begin
+
+    sSubKey := IntToHex(int16(strtoint('0x' + aKey.Substring(28)) + iID));
+    aKey := aKey.Substring(0,28) + sSubKey.ToLower;
+    valueHmac := Self.HashValueHexStr(aKey, aLicence);
+    aLicKey := '0x' + aLicKey.Replace('-','');
+    Result := (valueHmac = aLicKey);
+  end
+  else
+    Result := False;
+
+end;
+
+class function THMAC<T>.ValidatePassword(aKey, aUser, aValue, aHmacHash: string): Boolean;
+var
+  hmac: T;
+  valueHmac: string;
+  begin
+    valueHmac :=  self.HashValueBase64(aKey + aUser, aValue);
+    Result := (valueHmac = aHmacHash);
+end;
+
+class function THMAC<T>.HashValue(aKey, aValue: string): TIdBytes;
+var
+  hmac: T;
+begin
+  if (not IdSSLOpenSSL.LoadOpenSSLLibrary) then
+    Exit;
+
+  hmac := T.Create;
+  try
+    hmac.Key := IdBytesOf(aKey);
+    Result := hmac.HashValue(IdBytesOf(aValue));
+  finally
+    hmac.Free;
+  end;
+end;
+
+class function THMAC<T>.HashValueHexStr(aKey, aValue: string): string;
+var
+  value: Byte;
+begin
+  Result := '0x';
+  for value in HashValue(aKey, aValue) do
+    Result := Result + IntToHex(value, 2);
+end;
+
+class function THMAC<T>.HashValueBase64(aKey, aValue: string): string;
+var
+  values: TIdBytes;
+begin
+  values := HashValue(aKey, aValue);
+  Result := TIdEncoderMIME.EncodeBytes(values);
+end;
+
+
+end.

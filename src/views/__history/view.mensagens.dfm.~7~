@@ -1,0 +1,174 @@
+object frmMensagem: TfrmMensagem
+  Left = 0
+  Top = 0
+  BorderStyle = bsNone
+  ClientHeight = 300
+  ClientWidth = 700
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -12
+  Font.Name = 'Segoe UI'
+  Font.Style = []
+  Position = poScreenCenter
+  OnClose = FormClose
+  OnKeyDown = FormKeyDown
+  OnShow = FormShow
+  TextHeight = 15
+  object pnlFundo: TPanel
+    Left = 0
+    Top = 0
+    Width = 700
+    Height = 300
+    Align = alClient
+    BevelOuter = bvNone
+    TabOrder = 0
+    DesignSize = (
+      700
+      300)
+    object shpFundo: TShape
+      Left = 0
+      Top = 41
+      Width = 700
+      Height = 259
+      Align = alClient
+      Pen.Color = 5861915
+      Pen.Width = 2
+      ExplicitHeight = 344
+    end
+    object lblTituloMsg: TLabel
+      Left = 200
+      Top = 67
+      Width = 449
+      Height = 32
+      AutoSize = False
+      Caption = 'T'#205'TULO'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBtnShadow
+      Font.Height = -21
+      Font.Name = 'Segoe UI'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+    object lblMsg: TLabel
+      Left = 200
+      Top = 97
+      Width = 449
+      Height = 126
+      AutoSize = False
+      Caption = 'Mensagem para o usu'#225'rio'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBtnShadow
+      Font.Height = -19
+      Font.Name = 'Segoe UI'
+      Font.Style = []
+      ParentFont = False
+      WordWrap = True
+    end
+    object imgMsgIcone: TImage
+      Left = 55
+      Top = 104
+      Width = 100
+      Height = 100
+      Center = True
+    end
+    object pnlBarraTopo: TPanel
+      Left = 0
+      Top = 0
+      Width = 700
+      Height = 41
+      Align = alTop
+      BevelOuter = bvNone
+      Color = 5861915
+      ParentBackground = False
+      TabOrder = 0
+      object lblTituloJanela: TLabel
+        Left = 32
+        Top = 3
+        Width = 111
+        Height = 32
+        Caption = 'ATEN'#199#195'O'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWhite
+        Font.Height = -24
+        Font.Name = 'Segoe UI'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+    end
+    object pnlSim: TPanel
+      Left = 556
+      Top = 238
+      Width = 125
+      Height = 40
+      Anchors = [akTop, akRight]
+      BevelOuter = bvNone
+      Color = 16744448
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clMoneyGreen
+      Font.Height = -12
+      Font.Name = 'Segoe UI'
+      Font.Style = []
+      ParentBackground = False
+      ParentFont = False
+      TabOrder = 2
+      object btnSim: TSpeedButton
+        Left = 0
+        Top = 0
+        Width = 125
+        Height = 40
+        Cursor = crHandPoint
+        Align = alClient
+        Anchors = []
+        Caption = 'SIM (ENTER)'
+        Flat = True
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWhite
+        Font.Height = -16
+        Font.Name = 'Segoe UI'
+        Font.Style = [fsBold]
+        ParentFont = False
+        StyleElements = []
+        OnClick = btnSimClick
+        ExplicitWidth = 110
+      end
+    end
+    object pnlNao: TPanel
+      Left = 417
+      Top = 237
+      Width = 125
+      Height = 41
+      Anchors = [akTop, akRight]
+      BevelOuter = bvNone
+      Color = 155
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clMoneyGreen
+      Font.Height = -12
+      Font.Name = 'Segoe UI'
+      Font.Style = []
+      ParentBackground = False
+      ParentFont = False
+      TabOrder = 1
+      object btnNao: TSpeedButton
+        Left = 0
+        Top = 0
+        Width = 125
+        Height = 41
+        Cursor = crHandPoint
+        Align = alClient
+        Caption = 'N'#195'O (ESC)'
+        Flat = True
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWhite
+        Font.Height = -16
+        Font.Name = 'Segoe UI'
+        Font.Style = [fsBold]
+        ParentFont = False
+        StyleElements = []
+        OnClick = btnNaoClick
+        ExplicitWidth = 110
+        ExplicitHeight = 33
+      end
+    end
+  end
+end

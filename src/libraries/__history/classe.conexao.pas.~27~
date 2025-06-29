@@ -1,0 +1,171 @@
+unit classe.conexao;
+interface
+
+
+  uses
+    FireDAC.Comp.Client,
+    FireDAC.Stan.Intf,
+    System.SysUtils,
+    System.IniFiles,
+    Vcl.Forms;
+
+  type
+    TConexao = class
+      private
+        FServidor : string;
+        FMsgErro : string;
+        FSenha : string;
+        FBase : string;
+        FUsuario : string;
+        FPorta : string;
+        FConexao : TFDConnection;
+      public
+        constructor Create(NomeConexao : TFDConnection);
+        destructor Destroy; override;
+
+        function fncLerArquivoINI : Boolean;
+        procedure prcGravarArquivoINI;
+        procedure prcFechar;
+        procedure prcConectarBD;
+
+        property Conexao  : TFDConnection Read FConexao Write FConexao;
+        property Servidor : string Read FServidor Write FServidor;
+        property Porta    : string Read FPorta Write FPorta;
+        property Base     : string Read FBase Write FBase;
+        property Usuario  : string Read FUsuario Write FUsuario;
+        property Senha    : string Read FSenha Write FSenha;
+        property MsgErro  : string Read FMsgErro Write FMsgErro;
+    end;
+
+implementation
+
+uses
+  unitDados,
+  unit_AES,
+  IdHMACSHA1,
+  System.NetEncoding,
+  unit_globals;
+
+{ Tconexao }
+
+constructor TConexao.Create(NomeConexao: TFDConnection);
+begin
+  FConexao := NomeConexao;
+end;
+
+destructor TConexao.Destroy;
+begin
+  FConexao.Connected := False;
+  inherited;
+end;
+
+procedure TConexao.prcConectarBD;
+begin
+  gbServidorOk := True;
+
+  FConexao.Params.Clear;
+
+  if not fncLerArquivoINI then
+  begin
+    gbServidorOk := False;
+    FMsgErro := 'O arquivo de configuração do servidor não foi encontrado!';
+  end
+  else
+  begin
+    FConexao.Params.Add('Server=' + FServidor);
+    FConexao.Params.Add('user_name=' + FUsuario);
+    FConexao.Params.Add('password=' + FSenha);
+    FConexao.Params.Add('port=' + FPorta);
+    FConexao.Params.Add('database=' + FBase);
+    FConexao.Params.Add('DriverID=' + 'MySQL');
+
+
+    try
+      FConexao.Connected := True;
+    except on E: Exception do
+      begin
+        FMsgErro  := E.Message;
+        gbServidorOk    := False;
+      end;
+    end;
+  end;
+end;
+
+procedure TConexao.prcFechar;
+begin
+  FConexao.Connected  := False;
+  gbServidorOk        := False;
+end;
+
+procedure TConexao.prcGravarArquivoINI;
+var
+  IniFile     : string;
+  Ini         : TIniFile;
+  Key         : TBytes;
+  IV          : TBytes;
+  btsSenha    : TBytes;
+  encSenha    : TBytes;
+  SenhaBase64 : string;
+begin
+  IniFile := ChangeFileExt(Application.Exename, '.ini');
+  Ini     := TIniFile.Create(IniFile);
+  Key     := TEncoding.UTF8.GetBytes('73e76eb2c5b5e306bb3f5f8e3ad808b6');
+  IV      := TEncoding.UTF8.GetBytes('6694f38735f00910');
+  btsSenha:= TEncoding.UTF8.GetBytes(FSenha);
+  encSenha:= TAES.Encrypt(btsSenha, Key, 256, IV, cmCBC, pmPKCS7);
+  SenhaBase64 := TNetEncoding.Base64.EncodeBytesToString(encSenha);
+
+  try
+    Ini.WriteString('CONFIGURACAO','Servidor', FServidor);
+    Ini.WriteString('CONFIGURACAO','Porta', FPorta);
+    Ini.WriteString('CONFIGURACAO','Base', FBase);
+    Ini.WriteString('ACESSO','Usuario', FUsuario);
+    Ini.WriteString('ACESSO','Senha', SenhaBase64);
+
+  finally
+    Ini.Free;
+  end;
+
+end;
+
+function TConexao.fncLerArquivoINI : Boolean;
+var
+  IniFile : string;
+  Ini : TIniFile;
+  Key         : TBytes;
+  IV          : TBytes;
+  btsSenha    : TBytes;
+  encSenha    : TBytes;
+  SenhaBase64 : string;
+begin
+  IniFile := ChangeFileExt(Application.Exename, '.ini');
+  Ini     := TIniFile.Create(IniFile);
+  Key     := TEncoding.UTF8.GetBytes('73e76eb2c5b5e306bb3f5f8e3ad808b6');
+  IV      := TEncoding.UTF8.GetBytes('6694f38735f00910');
+
+
+  if not FileExists(IniFile) then
+    Result := False
+  else
+  begin
+    try
+      FServidor   := Ini.ReadString('CONFIGURACAO','Servidor','');
+      FPorta      := Ini.ReadString('CONFIGURACAO','Porta','');
+      FBase       := Ini.ReadString('CONFIGURACAO','Base','');
+      FUsuario    := Ini.ReadString('ACESSO','Usuario','');
+      SenhaBase64 := Ini.ReadString('ACESSO','Senha', '');
+
+      encSenha  := TNetEncoding.Base64.DecodeStringToBytes(SenhaBase64);
+      btsSenha  := TAES.Decrypt(encSenha, Key, 256, IV, cmCBC, pmPKCS7);
+      FSenha    := TEncoding.UTF8.GetString(btsSenha);
+
+    finally
+      Result := True;
+      Ini.Free;
+    end;
+  end;
+
+end;
+
+end.
+

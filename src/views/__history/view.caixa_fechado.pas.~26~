@@ -1,0 +1,140 @@
+unit view.caixa_fechado;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls, unit_globals,
+  Vcl.Imaging.pngimage, unitDados, Vcl.Menus, view.abrir_caixa, Data.DB,
+  Vcl.Grids, Vcl.DBGrids;
+
+type
+  TviewCaixaFechado = class(TForm)
+    pnlInfo: TPanel;
+    pnlInfoCaixa: TPanel;
+    lblLInfoCaixa: TLabel;
+    lblInfoCaixa: TLabel;
+    pnlInfoOp: TPanel;
+    lblLInfoOp: TLabel;
+    lblInfoOp: TLabel;
+    pnlInfoTicket: TPanel;
+    lblLInfoTicket: TLabel;
+    lblInfoTicket: TLabel;
+    pnlInfoStatus: TPanel;
+    lblInfoStatus: TLabel;
+    pnlInfoHora: TPanel;
+    lblInfoHora: TLabel;
+    pnlInfoData: TPanel;
+    lblInfoData: TLabel;
+    tmrPDVHora: TTimer;
+    pnlStatus: TPanel;
+    pnlStatusServidor: TPanel;
+    imgServidor: TImage;
+    imgStatusServidor: TImage;
+    lblServidorEnd: TLabel;
+    pnlVersao: TPanel;
+    lblStatusVersao: TLabel;
+    pnlCaixaFechado: TPanel;
+    shpCaixaFechado: TShape;
+    lblCaixaFechado: TLabel;
+    pnlFundoCaixaFechado: TPanel;
+    lblDicaF1: TLabel;
+    lblPDV: TLabel;
+    lblPDVId: TLabel;
+    pnlProp: TPanel;
+    pnlFundoCaixaAberto: TPanel;
+    pnlTicket: TPanel;
+    pnlTicketHeader: TPanel;
+    pnlTicketFooter: TPanel;
+    dbgTicket: TDBGrid;
+    procedure tmrPDVHoraTimer(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    function fncServidorOk(): Boolean;
+    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  viewCaixaFechado: TviewCaixaFechado;
+
+implementation
+
+{$R *.dfm}
+
+function TviewCaixaFechado.fncServidorOk: Boolean;
+begin
+  if frmDados.FDConnection.Connected then
+  begin
+    imgStatusServidor.Picture.LoadFromFile(ExtractFilePath(Application.ExeName) + '\assets\ok48.png');
+    lblServidorEnd.Caption := frmDados.FDConnection.Params.Values['Server'];
+    Result := True;
+  end
+  else
+  begin
+    imgStatusServidor.Picture.LoadFromFile(ExtractFilePath(Application.ExeName) + '\assets\erro.png');
+    lblServidorEnd.Caption := frmDados.FDConnection.Params.Values['Server'];
+    Result := False;
+  end;
+end;
+
+procedure TviewCaixaFechado.FormKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  if Key = VK_F1 then
+  begin
+    Application.CreateForm(TfrmAbrirCaixa, frmAbrirCaixa);
+    frmAbrirCaixa.ShowModal;
+  end;
+end;
+
+procedure TviewCaixaFechado.FormShow(Sender: TObject);
+begin
+  if gbCaixaFechado then
+  begin
+    pnlInfo.Color         := CCorFechado;
+    lblInfoCaixa.Caption  := '';
+    lblInfoOp.Caption     := gsNomeUsuario;
+    lblPDVId.Caption      := Format('%.3d',[giPDV]);
+    pnlProp.Caption       := gsProprietario;
+    lblInfoTicket.Caption := 'FECHADO';
+    lblInfoStatus.Caption := 'CAIXA FECHADO';
+
+    pnlFundoCaixaAberto.Visible := False;
+  end
+  else
+  begin
+    pnlInfo.Color         := CCorAberto;
+    lblInfoCaixa.Caption  := Format('%.1d',[giCaixa]);
+    lblInfoOp.Caption     := gsNomeUsuario;
+    lblPDVId.Caption      := Format('%.3d',[giPDV]);
+    pnlProp.Caption       := gsProprietario;
+    lblInfoTicket.Caption := 'FECHADO';
+    lblInfoStatus.Caption := 'CAIXA ABERTO';
+
+    pnlFundoCaixaAberto.Visible := True;
+  end;
+
+  lblInfoHora.Caption   := TimeToStr(Now);
+  lblInfoData.Caption   := FormatDateTime('ddd, d mmm yyyy',Date).ToUpper;
+  pnlCaixaFechado.Left  := Round((Screen.Width - pnlCaixaFechado.Width) / 2);
+  pnlCaixaFechado.Top   := Round((Screen.Height - pnlCaixaFechado.Height - 70) / 2);
+  lblCaixaFechado.Width := pnlCaixaFechado.Width;
+  lblDicaF1.Width       := pnlCaixaFechado.Width;
+
+
+  frmDados.Fechar;
+  frmDados.Abrir;
+
+  gbServidorOk := fncServidorOk();
+end;
+
+procedure TviewCaixaFechado.tmrPDVHoraTimer(Sender: TObject);
+begin
+  lblInfoHora.Caption := TimeToStr(Now);
+  lblInfoData.Caption := FormatDateTime('ddd, d mmm yyyy',Date).ToUpper;
+end;
+
+end.

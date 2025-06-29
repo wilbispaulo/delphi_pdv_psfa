@@ -1,0 +1,115 @@
+unit view.configurarservidor;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.Imaging.pngimage,
+  Vcl.ExtCtrls, Vcl.Buttons, WWPEdit;
+
+type
+  TfrmConfigurarServidor = class(TForm)
+    shpFundo: TShape;
+    pnlTopo: TPanel;
+    pnlConfNovas: TPanel;
+    pnlConfAtuais: TPanel;
+    pnlContainer: TPanel;
+    lblConfServ: TLabel;
+    pnlEntrar: TPanel;
+    btnGravar: TSpeedButton;
+    pnlCancelar: TPanel;
+    btnCancelar: TSpeedButton;
+    lblTituloNova: TLabel;
+    lblTituloAtual: TLabel;
+    pnlSeparadorNova: TPanel;
+    pnlSeparadorAtual: TPanel;
+    lblNomeServidor: TLabel;
+    lblPorta: TLabel;
+    Label1: TLabel;
+    Label2: TLabel;
+    lblUsuario: TLabel;
+    lblSenha: TLabel;
+    lblBancoDados: TLabel;
+    edtNomeServidorAtual: TEdit;
+    edtPortaAtual: TEdit;
+    edtUsuarioAtual: TEdit;
+    edtSenhaAtual: TEdit;
+    lblNomeServidorAtual: TLabel;
+    lblPortaAtual: TLabel;
+    lblUsuarioAtual: TLabel;
+    lblSenhaAtual: TLabel;
+    edtBancoDadosAtual: TEdit;
+    lblBancoDadosAtual: TLabel;
+    imgConfiguracaoServidor: TImage;
+    edtNomeServidor: TWWPEdit;
+    edtPorta: TWWPEdit;
+    edtBancoDados: TWWPEdit;
+    edtUsuario: TWWPEdit;
+    edtSenha: TWWPEdit;
+    procedure btnGravarClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmConfigurarServidor: TfrmConfigurarServidor;
+
+implementation
+
+uses
+  unit_funcoes, unitDados;
+
+{$R *.dfm}
+
+procedure TfrmConfigurarServidor.btnGravarClick(Sender: TObject);
+begin
+  prcValidarCamposObrigatorios(frmConfigurarServidor);
+
+  dtmdlDB.Conexao.Servidor  := edtNomeServidor.Text;
+  dtmdlDB.Conexao.Porta     := edtPorta.Text;
+  dtmdlDB.Conexao.Base      := edtBancoDados.Text;
+  dtmdlDB.Conexao.Usuario   := edtUsuario.Text;
+  dtmdlDB.Conexao.Senha     := edtSenha.Text;
+
+  if dtmdlDB.Conexao.fncConectarBD then
+  begin
+    dtmdlDB.Conexao.prcGravarArquivoINI;
+
+
+    fncCriarMensagem('CONEXÃO AO BANCO DE DADOS',
+                     'BANCO DE DADOS CONECTATO COM SUSSESSO!',
+                     'SERVIDOR = ' + dtmdlDB.Conexao.Servidor + ':' +
+                     dtmdlDB.Conexao.Porta,
+                     ExtractFilePath(Application.ExeName) + '\assets\ok.png',
+                     'OK');
+    Close;
+
+  end
+  else
+  begin
+    fncCriarMensagem('CONEXÃO AO BANCO DE DADOS',
+                     'ERRO AO CONECTAR AO BANCO DE DADOS!',
+                     'não foi possível conectar ao Banco de Dados, possível causa:' +
+                     dtmdlDB.Conexao.MsgErro,
+                     ExtractFilePath(Application.ExeName) + '\assets\erro.png',
+                     'OK');
+    edtNomeServidor.SetFocus;
+  end;
+end;
+
+procedure TfrmConfigurarServidor.FormShow(Sender: TObject);
+begin
+  if dtmdlDB.Conexao.fncLerArquivoINI then
+  begin
+    edtNomeServidorAtual.Text := dtmdlDB.Conexao.Servidor;
+    edtPortaAtual.Text := dtmdlDB.Conexao.Porta;
+    edtBancoDadosAtual.Text := dtmdlDB.Conexao.Base;
+    edtUsuarioAtual.Text := dtmdlDB.Conexao.Usuario;
+    edtSenhaAtual.Text := dtmdlDB.Conexao.Senha;
+  end;
+end;
+
+end.

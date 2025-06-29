@@ -1,0 +1,28 @@
+object dtmdlDB: TdtmdlDB
+  Height = 480
+  Width = 640
+  object FDConnection: TFDConnection
+    Params.Strings = (
+      'Database=pdv'
+      'User_Name=root'
+      'Password=123456'
+      'Server=192.168.1.90'
+      'CharacterSet=utf8'
+      'Port=3307'
+      'DriverID=MySQL')
+    Connected = True
+    LoginPrompt = False
+    Left = 120
+    Top = 80
+  end
+  object MySQLDriverLink: TFDPhysMySQLDriverLink
+    VendorLib = 'D:\Delphi\PDV_PSFA\install\libmysql.dll'
+    Left = 256
+    Top = 80
+  end
+  object FDGUIxWaitCursor: TFDGUIxWaitCursor
+    Provider = 'Forms'
+    Left = 392
+    Top = 80
+  end
+end

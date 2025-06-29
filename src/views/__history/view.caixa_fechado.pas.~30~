@@ -1,0 +1,38 @@
+unit view.caixa_fechado;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls;
+
+type
+  TfrmCaixaFechado = class(TForm)
+    pnlFundoCaixaFechado: TPanel;
+    pnlCaixaFechado: TPanel;
+    shpCaixaFechado: TShape;
+    lblCaixaFechado: TLabel;
+    lblDicaF1: TLabel;
+    procedure FormShow(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmCaixaFechado: TfrmCaixaFechado;
+
+implementation
+
+{$R *.dfm}
+
+procedure TfrmCaixaFechado.FormShow(Sender: TObject);
+begin
+  pnlCaixaFechado.Left  := Round((Screen.Width - pnlCaixaFechado.Width) / 2);
+  pnlCaixaFechado.Top   := Round((Screen.Height - pnlCaixaFechado.Height - 70) / 2);
+  lblCaixaFechado.Width := pnlCaixaFechado.Width;
+  lblDicaF1.Width       := pnlCaixaFechado.Width;
+end;
+
+end.

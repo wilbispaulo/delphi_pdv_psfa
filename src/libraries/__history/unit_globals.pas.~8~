@@ -1,0 +1,20 @@
+unit unit_globals;
+
+interface
+uses
+  Vcl.Graphics;
+var
+  gbLogado      : Boolean;
+  gsNomeUsuario : string;
+  giIdUsuario   : Integer;
+  gbServidorOk  : Boolean;
+
+const
+  CKey        :String  = '73e76eb2c5b5e306bb3f5f8e3ad808b6';
+  CIV         :String  = '6694f38735f00910';
+  CCorAberto  :TColor  = $00476300;
+  CCorFechado :TColor  = $003F3FBE;
+
+implementation
+
+end.

@@ -1,0 +1,23 @@
+object dtmdlDB: TdtmdlDB
+  OnCreate = DataModuleCreate
+  OnDestroy = DataModuleDestroy
+  Height = 480
+  Width = 640
+  object FDConnection: TFDConnection
+    Params.Strings = (
+      'DriverID=MySQL')
+    LoginPrompt = False
+    Left = 120
+    Top = 80
+  end
+  object MySQLDriverLink: TFDPhysMySQLDriverLink
+    VendorLib = 'D:\Delphi\PDV_PSFA\install\libmysql.dll'
+    Left = 256
+    Top = 80
+  end
+  object FDGUIxWaitCursor: TFDGUIxWaitCursor
+    Provider = 'Forms'
+    Left = 392
+    Top = 80
+  end
+end

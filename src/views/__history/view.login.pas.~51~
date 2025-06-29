@@ -1,0 +1,183 @@
+unit view.login;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls,
+  Vcl.Imaging.pngimage, Vcl.Buttons, classe.usuarios, unitDados,
+  FireDAC.Comp.Client, unit_HMAC, IdHMACSHA1;
+
+type
+  TfrmLogin = class(TForm)
+    pnlLogin: TPanel;
+    pnlLateral: TPanel;
+    lblNomeApp: TLabel;
+    lblProp: TLabel;
+    lblVersao: TLabel;
+    imgLogo: TImage;
+    lblLogin: TLabel;
+    pnlCampoNome: TPanel;
+    lblNomeUsuario: TLabel;
+    pnlNomeBorda: TPanel;
+    edtNomeUsuario: TEdit;
+    pnlCampoSenha: TPanel;
+    lblNomeUsuario1: TLabel;
+    pnlSenhaBorda: TPanel;
+    edtSenha: TEdit;
+    pnlEntrar: TPanel;
+    btnEntrar: TSpeedButton;
+    btnCancelar: TSpeedButton;
+    procedure FormCreate(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure btnCancelarClick(Sender: TObject);
+    procedure btnEntrarClick(Sender: TObject);
+    procedure prcLogin;
+    procedure pnlEntrarExit(Sender: TObject);
+    procedure pnlEntrarEnter(Sender: TObject);
+    procedure FormKeyPress(Sender: TObject; var Key: Char);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmLogin: TfrmLogin;
+
+implementation
+
+uses
+  unit_globals, unit_funcoes;
+
+{$R *.dfm}
+
+procedure TfrmLogin.btnCancelarClick(Sender: TObject);
+begin
+  Application.Terminate;
+end;
+
+procedure TfrmLogin.btnEntrarClick(Sender: TObject);
+begin
+  Self.prcLogin;
+end;
+
+procedure TfrmLogin.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  dtmdlDB.Usuario.Destroy;
+  Action := TCloseAction.caFree;
+end;
+
+procedure TfrmLogin.FormCreate(Sender: TObject);
+begin
+  dtmdlDB.Usuario := TUsuarios.Create(dtmdlDB.FDConnection);
+end;
+
+procedure TfrmLogin.pnlEntrarEnter(Sender: TObject);
+begin
+  pnlEntrar.Color := clHighlight;
+end;
+
+procedure TfrmLogin.pnlEntrarExit(Sender: TObject);
+begin
+  pnlEntrar.Color := clTeal;
+end;
+
+procedure TfrmLogin.prcLogin;
+var
+  LUsuario, LSenha,LdbSenha : string;
+  DSUsuario : TFDQuery;
+begin
+  gbLogado := False;
+  gsNomeUsuario := '';
+  giIdUsuario := 0;
+  LUsuario := Trim(fncRemoveCaracteres(edtNomeUsuario.Text));
+  LSenha := Trim(edtSenha.Text);
+
+  dtmdlDB.Usuario.prcAbrir;
+
+  if not gbServidorOk then
+  begin
+    fncCriarMensagem('CONEXÃO AO BANCO DE DADOS',
+                     'ERRO AO CONECTAR AO BANCO DE DADOS!',
+                     'não foi possível conectar ao Banco de Dados, possível causa: ' +
+                     dtmdlDB.Usuario.MsgErro,
+                     ExtractFilePath(Application.ExeName) + '\assets\erro.png',
+                     'OK');
+    Abort;
+  end;
+
+  if LUsuario = '' then
+  begin
+    fncCriarMensagem('AVISO!',
+                    'DADOS OBRIGATÓRIOS',
+                    'O campo USUÁRIO é obrigatório',
+                    ExtractFilePath(Application.ExeName) + '\assets\atencao.png',
+                    'OK');
+
+    edtNomeUsuario.SetFocus;
+    Abort;
+  end;
+
+  if LSenha = '' then
+  begin
+    fncCriarMensagem('AVISO!',
+                    'DADOS OBRIGATÓRIOS',
+                    'O campo SENHA é obrigatório',
+                    ExtractFilePath(Application.ExeName) + '\assets\atencao.png',
+                    'OK');
+
+    edtSenha.SetFocus;
+    Abort;
+  end;
+
+  DSUsuario := dtmdlDB.Usuario.fncConsulta(LUsuario);
+
+  if DSUsuario.RecordCount = 0 then
+  begin
+  fncCriarMensagem('LOGIN DE USUÁRIO',
+                     'USUÁRIO NÃO ENCONTRADO NA BASE DE DADOS!',
+                     'não foi possível executar o login do usuário ' + LUsuario,
+                     ExtractFilePath(Application.ExeName) + '\assets\erro.png',
+                     'OK');
+    edtNomeUsuario.SetFocus;
+    Abort;
+  end;
+  LdbSenha := DSUsuario.FieldByName('senha').AsString;
+
+  if not THMAC<TIdHMACSHA256>.ValidatePassword(CKey, LSenha, LdbSenha) then
+  begin
+    fncCriarMensagem('LOGIN DE USUÁRIO',
+                     'SENHA INCORRETA!',
+                     'não foi possível executar o login do usuário ' + LUsuario,
+                     ExtractFilePath(Application.ExeName) + '\assets\erro.png',
+                     'OK');
+    edtSenha.SetFocus;
+    Abort;
+  end;
+
+  gbLogado := True;
+  gsNomeUsuario := DSUsuario.FieldByName('nome').AsString;
+  giIdUsuario := DSUsuario.FieldByName('idusuario').AsInteger;
+
+  Close;
+end;
+
+procedure TfrmLogin.FormKeyPress(Sender: TObject; var Key: Char);
+begin
+
+  If key = #13 then
+    begin
+      if pnlEntrar.Focused then
+      begin
+        btnEntrar.Click;
+      end
+      else
+      begin
+        SelectNext(Screen.ActiveControl, True, True);
+      end;
+      Key := #0;
+    end;
+  end;
+
+end.

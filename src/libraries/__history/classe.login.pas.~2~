@@ -1,0 +1,20 @@
+unit classe.login;
+
+interface
+
+type
+  TLogin = class
+    private
+    Flogado: Boolean;
+    Fnivel: Integer;
+    Fnome: String;
+
+    public
+      property logado     : Boolean read Flogado write Flogado;
+      property nivel      : Integer read Fnivel write Fnivel;
+      property nome       : String read Fnome write Fnome;
+  end;
+
+implementation
+
+end.
