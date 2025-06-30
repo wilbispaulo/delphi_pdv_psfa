@@ -87,12 +87,16 @@ end;
 procedure TUsuarios.prcAbrir;
 begin
   try
-    FConexao.Connected := True;
-  except on E: Exception do
-    begin
-      FMsgErro      := E.Message;
-      gbServidorOk  := False;
+    try
+      FConexao.Connected := True;
+    except on E: Exception do
+      begin
+        FMsgErro      := E.Message;
+        gbServidorOk  := False;
+      end;
     end;
+  finally
+    gbServidorOk := True;
   end;
 end;
 

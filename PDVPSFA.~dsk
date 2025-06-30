@@ -1,10 +1,10 @@
 ﻿[Closed Files]
-File_0=TSourceModule,'D:\Delphi\PDV_PSFA\src\views\view.principal.pas',0,1,1,35,81,0,0,,
-File_1=TSourceModule,'c:\program files (x86)\embarcadero\studio\23.0\source\data\Data.DB.pas',0,1,7706,1,7720,0,0,,
-File_2=TSourceModule,'c:\program files (x86)\embarcadero\studio\23.0\SOURCE\RTL\SYS\System.SysUtils.pas',0,1,21362,1,21376,0,0,,
-File_3=TSourceModule,'D:\Delphi\PDV_PSFA\src\libraries\unit_HMAC.pas',0,1,1,1,59,0,0,,
-File_4=TSourceModule,'c:\program files (x86)\embarcadero\studio\23.0\source\rtl\common\System.Generics.Collections.pas',0,1,7707,1,7721,0,0,,
-File_5=TSourceModule,'c:\program files (x86)\embarcadero\studio\23.0\SOURCE\VCL\Vcl.Forms.pas',0,1,8009,1,8023,0,0,{{2051,4}
+File_0=TSourceModule,'c:\program files (x86)\embarcadero\studio\23.0\SOURCE\VCL\Vcl.Forms.pas',0,1,13366,1,13385,0,0,{{2051,4},{2067,15},{'TScrollWindow'}}{{2161,4},{2265,15},{'TMainMenuBarStyleHook'}},
+File_1=TSourceModule,'D:\Delphi\PDV_PSFA\src\views\view.principal.pas',0,1,1,35,81,0,0,,
+File_2=TSourceModule,'c:\program files (x86)\embarcadero\studio\23.0\source\data\Data.DB.pas',0,1,7706,1,7720,0,0,,
+File_3=TSourceModule,'c:\program files (x86)\embarcadero\studio\23.0\SOURCE\RTL\SYS\System.SysUtils.pas',0,1,21362,1,21376,0,0,,
+File_4=TSourceModule,'D:\Delphi\PDV_PSFA\src\libraries\unit_HMAC.pas',0,1,1,1,59,0,0,,
+File_5=TSourceModule,'c:\program files (x86)\embarcadero\studio\23.0\source\rtl\common\System.Generics.Collections.pas',0,1,7707,1,7721,0,0,,
 File_6=TSourceModule,'D:\Delphi\PDV_PSFA\src\views\frame.caixa_aberto.pas',0,1,1,1,1,0,0,,
 File_7=TSourceModule,'D:\Delphi\PDV_PSFA\src\models\classe.caixaaberto.pas',0,1,1,71,71,0,0,,
 File_8=TSourceModule,'D:\Delphi\PDV_PSFA\src\views\view.mensagens.pas',0,1,19,1,37,0,0,,
@@ -15,15 +15,15 @@ File_12=TSourceModule,'D:\Delphi\PDV_PSFA\src\libraries\unit_HASH.pas',0,1,1,42,
 File_13=TSourceModule,'c:\program files (x86)\embarcadero\studio\23.0\source\rtl\common\System.Classes.pas',0,1,19068,1,19087,0,0,,
 
 [Modules]
-Module0=D:\Delphi\PDV_PSFA\src\views\view.caixa_aberto.pas
-Module1=D:\Delphi\PDV_PSFA\src\views\view.caixa.pas
-Module2=D:\Delphi\PDV_PSFA\PDVPSFA.dproj
+Module0=D:\Delphi\PDV_PSFA\src\views\view.caixa.pas
+Module1=D:\Delphi\PDV_PSFA\PDVPSFA.dproj
+Module2=D:\Delphi\PDV_PSFA\src\models\classe.pdvlanc.pas
 Module3=D:\Delphi\PDV_PSFA\src\libraries\unitDados.pas
-Module4=D:\Delphi\PDV_PSFA\src\models\classe.ticket.pas
-Module5=D:\Delphi\PDV_PSFA\src\views\view.caixa_fechado.pas
-Module6=D:\Delphi\PDV_PSFA\src\models\classe.usuarios.pas
-Module7=D:\Delphi\PDV_PSFA\src\libraries\unit_globals.pas
-Module8=D:\Delphi\PDV_PSFA\src\models\classe.pdvlanc.pas
+Module4=D:\Delphi\PDV_PSFA\src\views\view.caixa_aberto.pas
+Module5=D:\Delphi\PDV_PSFA\src\models\classe.ticket.pas
+Module6=D:\Delphi\PDV_PSFA\src\views\view.caixa_fechado.pas
+Module7=D:\Delphi\PDV_PSFA\src\models\classe.usuarios.pas
+Module8=D:\Delphi\PDV_PSFA\src\libraries\unit_globals.pas
 Module9=D:\Delphi\PDV_PSFA\src\views\view.configurarservidor.pas
 Module10=D:\Delphi\PDV_PSFA\src\libraries\unit_funcoes.pas
 Module11=D:\Delphi\PDV_PSFA\src\libraries\classe.conexao.pas
@@ -33,16 +33,19 @@ Module14=D:\Delphi\PDV_PSFA\src\views\view.abrir_caixa.pas
 Count=15
 EditWindowCount=1
 
-[D:\Delphi\PDV_PSFA\src\views\view.caixa_aberto.pas]
-ModuleType=TSourceModule
-
 [D:\Delphi\PDV_PSFA\src\views\view.caixa.pas]
 ModuleType=TSourceModule
 
 [D:\Delphi\PDV_PSFA\PDVPSFA.dproj]
 ModuleType=TBaseProject
 
+[D:\Delphi\PDV_PSFA\src\models\classe.pdvlanc.pas]
+ModuleType=TSourceModule
+
 [D:\Delphi\PDV_PSFA\src\libraries\unitDados.pas]
+ModuleType=TSourceModule
+
+[D:\Delphi\PDV_PSFA\src\views\view.caixa_aberto.pas]
 ModuleType=TSourceModule
 
 [D:\Delphi\PDV_PSFA\src\models\classe.ticket.pas]
@@ -55,9 +58,6 @@ ModuleType=TSourceModule
 ModuleType=TSourceModule
 
 [D:\Delphi\PDV_PSFA\src\libraries\unit_globals.pas]
-ModuleType=TSourceModule
-
-[D:\Delphi\PDV_PSFA\src\models\classe.pdvlanc.pas]
 ModuleType=TSourceModule
 
 [D:\Delphi\PDV_PSFA\src\views\view.configurarservidor.pas]
@@ -80,7 +80,7 @@ ModuleType=TSourceModule
 
 [EditWindow0]
 ViewCount=15
-CurrentEditView=D:\Delphi\PDV_PSFA\src\views\view.caixa_aberto.pas
+CurrentEditView=D:\Delphi\PDV_PSFA\src\views\view.caixa.pas
 View0=0
 View1=1
 View2=2
@@ -154,9 +154,9 @@ EditViewName=D:\Delphi\PDV_PSFA\src\models\classe.ticketitens.pas
 [View2]
 CustomEditViewType=TEditView
 Module=D:\Delphi\PDV_PSFA\src\views\view.caixa.pas
-CursorX=53
-CursorY=105
-TopLine=109
+CursorX=1
+CursorY=56
+TopLine=121
 LeftCol=1
 Elisions=
 Bookmarks=
@@ -198,8 +198,8 @@ EditViewName=Borland.FormDesignerView
 [View6]
 CustomEditViewType=TEditView
 Module=D:\Delphi\PDV_PSFA\PDVPSFA.dpr
-CursorX=1
-CursorY=1
+CursorX=44
+CursorY=115
 TopLine=88
 LeftCol=1
 Elisions=
@@ -209,13 +209,13 @@ EditViewName=D:\Delphi\PDV_PSFA\PDVPSFA.dpr
 [View7]
 CustomEditViewType=TEditView
 Module=D:\Delphi\PDV_PSFA\src\libraries\unitDados.pas
-CursorX=47
-CursorY=29
-TopLine=1
+CursorX=1
+CursorY=39
+TopLine=20
 LeftCol=1
 Elisions=
 Bookmarks=
-EditViewName=Borland.FormDesignerView
+EditViewName=D:\Delphi\PDV_PSFA\src\libraries\unitDados.pas
 
 [View8]
 CustomEditViewType=TEditView
@@ -243,8 +243,8 @@ EditViewName=D:\Delphi\PDV_PSFA\src\models\classe.usuarios.pas
 CustomEditViewType=TEditView
 Module=D:\Delphi\PDV_PSFA\src\models\classe.pdvlanc.pas
 CursorX=1
-CursorY=68
-TopLine=49
+CursorY=24
+TopLine=10
 LeftCol=1
 Elisions=
 Bookmarks=
@@ -444,8 +444,8 @@ SplitPos=111
 
 [PropInspDesignerSelection]
 ArrangeBy=Name
-SelectedItem=Caption,CustomHint
-ExpandedItems=Anchors=0,BorderIcons=0,Constraints=0,"LiveBindings Designer=0",BevelEdges=0,LiveBindings=0
+SelectedItem=Name,
+ExpandedItems=Anchors=0,BorderIcons=0,Constraints=0,"LiveBindings Designer=0"
 
 [frmDesignPreview]
 PercentageSizes=1
@@ -472,8 +472,8 @@ Create=1
 Visible=0
 Docked=1
 State=0
-Left=-250
-Top=-397
+Left=-146
+Top=-293
 Width=1849
 Height=3143
 MaxLeft=-1
@@ -718,11 +718,11 @@ State=0
 Left=0
 Top=0
 Width=2000
-Height=4200
+Height=5400
 MaxLeft=-1
 MaxTop=-1
 ClientWidth=2000
-ClientHeight=4200
+ClientHeight=5400
 TBDockHeight=4886
 LRDockWidth=7151
 Dockable=1
@@ -801,11 +801,11 @@ State=0
 Left=0
 Top=0
 Width=2000
-Height=4200
+Height=5400
 MaxLeft=-1
 MaxTop=-1
 ClientWidth=2000
-ClientHeight=4200
+ClientHeight=5400
 TBDockHeight=4886
 LRDockWidth=5307
 Dockable=1

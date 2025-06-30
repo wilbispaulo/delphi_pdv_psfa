@@ -82,16 +82,12 @@ end;
 procedure TTicket.prcAbrir;
 begin
   try
-    try
-      FConexao.Connected := True;
-    except on E: Exception do
-      begin
-        FMsgErro      := E.Message;
-        gbServidorOk  := False;
-      end;
+    FConexao.Connected := True;
+  except on E: Exception do
+    begin
+      FMsgErro      := E.Message;
+      gbServidorOk  := False;
     end;
-  finally
-    gbServidorOk := True;
   end;
 end;
 

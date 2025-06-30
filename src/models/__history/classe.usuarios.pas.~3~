@@ -26,7 +26,7 @@ Type
       property senha      : String read Fsenha write Fsenha;
       property nivel      : Integer read Fnivel write Fnivel;
       property nome       : String read Fnome write Fnome;
-      property MsgErro    : string read FMsgErro Write FMsgErro;
+      property MsgErro    : string Read FMsgErro Write FMsgErro;
 
       constructor Create(vConexao : TFdConnection);
       destructor Destroy; override;
@@ -87,12 +87,16 @@ end;
 procedure TUsuarios.prcAbrir;
 begin
   try
-    FConexao.Connected := True;
-  except on E: Exception do
-    begin
-      FMsgErro      := E.Message;
-      gbServidorOk  := False;
+    try
+      FConexao.Connected := True;
+    except on E: Exception do
+      begin
+        FMsgErro      := E.Message;
+        gbServidorOk  := False;
+      end;
     end;
+  finally
+    gbServidorOk := True;
   end;
 end;
 

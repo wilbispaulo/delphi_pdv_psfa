@@ -60,9 +60,9 @@ EditViewName=D:\Delphi\PDV_PSFA\src\libraries\unit_funcoes.pas
 
 [ClosedView_RDpcRGVscGhpXFBEVl9QU0ZBXHNyY1xsaWJyYXJpZXNcY2xhc3NlLmNvbmV4YW8ucGFz]
 Module=D:\Delphi\PDV_PSFA\src\libraries\classe.conexao.pas
-CursorX=62
-CursorY=170
-TopLine=5
+CursorX=31
+CursorY=172
+TopLine=145
 LeftCol=1
 Elisions=
 Bookmarks=
@@ -150,8 +150,8 @@ EditViewName=D:\Delphi\PDV_PSFA\src\libraries\classe.login.pas
 
 [ClosedView_RDpcRGVscGhpXFBEVl9QU0ZBXHNyY1xsaWJyYXJpZXNcdW5pdF9nbG9iYWxzLnBhcw==]
 Module=D:\Delphi\PDV_PSFA\src\libraries\unit_globals.pas
-CursorX=6
-CursorY=17
+CursorX=43
+CursorY=23
 TopLine=1
 LeftCol=1
 Elisions=
@@ -390,9 +390,9 @@ EditViewName=
 
 [ClosedView_RDpcRGVscGhpXFBEVl9QU0ZBXHNyY1xtb2RlbHNcY2xhc3NlLnVzdWFyaW9zLnBhcw==]
 Module=D:\Delphi\PDV_PSFA\src\models\classe.usuarios.pas
-CursorX=1
-CursorY=74
-TopLine=56
+CursorX=48
+CursorY=96
+TopLine=91
 LeftCol=1
 Elisions=
 Bookmarks=
@@ -440,9 +440,9 @@ EditViewName=
 
 [ClosedView_RDpcRGVscGhpXFBEVl9QU0ZBXHNyY1xtb2RlbHNcY2xhc3NlLnRpY2tldC5wYXM=]
 Module=D:\Delphi\PDV_PSFA\src\models\classe.ticket.pas
-CursorX=1
-CursorY=156
-TopLine=1
+CursorX=51
+CursorY=89
+TopLine=103
 LeftCol=1
 Elisions=
 Bookmarks=
@@ -450,9 +450,9 @@ EditViewName=D:\Delphi\PDV_PSFA\src\models\classe.ticket.pas
 
 [ClosedView_RDpcRGVscGhpXFBEVl9QU0ZBXHNyY1x2aWV3c1x2aWV3LmNhaXhhLnBhcw==]
 Module=D:\Delphi\PDV_PSFA\src\views\view.caixa.pas
-CursorX=53
-CursorY=105
-TopLine=109
+CursorX=1
+CursorY=56
+TopLine=34
 LeftCol=1
 Elisions=
 Bookmarks=

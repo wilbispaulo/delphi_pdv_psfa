@@ -15,7 +15,7 @@ type
     FConexao      : TFDConnection;
     FMsgErro      : string;
     FPdv          : string;
-    FData         : string;
+    FData         : TDate;
     FNumticket    : string;
     FCaixa        : string;
     FOpnome       : string;
@@ -23,18 +23,18 @@ type
     FInfo3        : string;
     FInfo1        : string;
     FInfo4        : string;
-    FFechado_em   : string;
-    FCancelado_em : string;
-    FAberto_em    : string;
-    FCancelado    : Integer;
-    FFechado      : Integer;
+    FFechado_em   : TDateTime;
+    FCancelado_em : TDateTime;
+    FAberto_em    : TDateTime;
+    FCancelado    : string;
+    FFechado      : string;
 
   public
     property Conexao      : TFDConnection read FConexao write FConexao;
     property MsgErro      : string read FMsgErro write FMsgErro;
 
     property pdv          : string read FPdv write FPdv;
-    property data         : string read FData write FData;
+    property data         : TDate read FData write FData;
     property numticket    : string read FNumticket write FNumticket;
     property caixa        : string read FCaixa write FCaixa;
     property opnome       : string read FOpnome write FOpnome;
@@ -42,11 +42,11 @@ type
     property info2        : string read FInfo2 write FInfo2;
     property info3        : string read FInfo3 write FInfo3;
     property info4        : string read FInfo4 write FInfo4;
-    property aberto_em    : string read FAberto_em write FAberto_em;
-    property fechado_em   : string read FFechado_em write FFechado_em;
-    property fechado      : Integer read FFechado write FFechado;
-    property cancelado_em : string read FCancelado_em write FCancelado_em;
-    property cancelado    : Integer read FCancelado write FCancelado;
+    property aberto_em    : TDateTime read FAberto_em write FAberto_em;
+    property fechado_em   : TDateTime read FFechado_em write FFechado_em;
+    property fechado      : string read FFechado write FFechado;
+    property cancelado_em : TDateTime read FCancelado_em write FCancelado_em;
+    property cancelado    : string read FCancelado write FCancelado;
 
     constructor Create(vConexao : TFDConnection);
     destructor Destroy; override;
@@ -68,9 +68,9 @@ implementation
 
 constructor TTicket.Create(vConexao: TFDConnection);
 begin
+  FConexao := vConexao;
   QryConsulta := TFDQuery.Create(nil);
   QryConsulta.Connection := FConexao;
-  FConexao := vConexao;
 end;
 
 destructor TTicket.Destroy;
@@ -145,18 +145,31 @@ begin
 
     prcSQLInit;
 
-    QryConsulta.SQL.Add('SELECT numticket FROM ticket ');
-    QryConsulta.SQL.Add('WHERE pdv = :pPDV AND fechado <> 1');
+    QryConsulta.SQL.Add('SELECT * FROM ticket ');
+    QryConsulta.SQL.Add('WHERE pdv = :pPDV ');
+    QryConsulta.SQL.Add('AND caixa = :pCaixa ');
+    QryConsulta.SQL.Add('AND fechado = "N" AND cancelado = "N"');
     QryConsulta.ParamByName('pPDV').AsString := FPdv;
+    QryConsulta.ParamByName('pCaixa').AsString := FCaixa;
     QryConsulta.Open;
 
     if QryConsulta.RecordCount > 0 then
     begin
-      FNumticket := QryConsulta.FieldByName('numticket').AsString;
+      FNumticket  := QryConsulta.FieldByName('numticket').AsString;
+      FPdv        := QryConsulta.FieldByName('pdv').AsString;
+      FData       := QryConsulta.FieldByName('data').AsDateTime;
+      FCaixa      := QryConsulta.FieldByName('caixa').AsString;
+      FOpnome     := QryConsulta.FieldByName('opnome').AsString;
+      FInfo1      := QryConsulta.FieldByName('info1').AsString;
+      FInfo2      := QryConsulta.FieldByName('info2').AsString;
+      FInfo3      := QryConsulta.FieldByName('info3').AsString;
+      FInfo4      := QryConsulta.FieldByName('info4').AsString;
+      FAberto_em  := QryConsulta.FieldByName('aberto_em').AsDateTime;
+
       lbTicketAberto := True;
-    end else
+    end
+    else
     begin
-      FNumticket := '';
       lbTicketAberto := False;
     end;
 
