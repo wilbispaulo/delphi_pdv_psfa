@@ -13,6 +13,7 @@ uses
   System.IniFiles,
   System.NetEncoding,
   System.SysUtils,
+  Winapi.Windows,
 
   Vcl.Controls,
   Vcl.Dialogs,
@@ -25,19 +26,31 @@ uses
 
 
 function fncCriarMensagem(TituloJanela, TituloMsg, Msg, Icone, Tipo : string) : Boolean;
+function fncCriarMensagemGlobal(TituloJanela, TituloMsg, Msg, Icone, Tipo : string) : Boolean;
 function fncRemoveCaracteres(AString : string) : string;
 function fncValidaLicenca() : Boolean;
 function fncValidaSenha(Usuario, Senha, SenhaDB: string): Boolean;
 function Espaco(aLength: Integer): string;
 function Repete(aChar: string; aLength: Integer): string;
+function IIf(Condition: Boolean; TruePart, FalsePart: Variant): Variant;
 function fncDataDbToDataStr(sDataDb: string): string;
 function fncDataDbToData(sDataDb: string): TDate;
 function fncDataDbToDataHora(sDataHoraDb: string): TDateTime;
 function fncDataStrToDataDb(sDataStr: string): string;
+function fncTextoEspacoFim(sTexto: string; iTamanho: Integer): string;
+function fncTextoEspacoIni(sTexto: string; iTamanho: Integer): string;
 procedure prcValidarCamposObrigatorios(Form : TForm);
+procedure OcultarCaret(Control: TWinControl);
 
 implementation
 
+function IIf(Condition: Boolean; TruePart, FalsePart: Variant): Variant;
+begin
+  if Condition then
+    Result := TruePart
+  else
+    Result := FalsePart;
+end;
 
 function fncCriarMensagem(TituloJanela, TituloMsg, Msg, Icone, Tipo : string) : Boolean;
 begin
@@ -53,6 +66,33 @@ begin
 
     frmMensagem.ShowModal;
     Result := frmMensagem.bRespostaMSG;
+
+end;
+
+function fncCriarMensagemGlobal(TituloJanela, TituloMsg, Msg, Icone, Tipo : string) : Boolean;
+begin
+    Result := False;
+
+    msgMensagemGlobal := TfrmMensagem.Create(nil);
+
+    msgMensagemGlobal.sTituloJanela := TituloJanela;
+    msgMensagemGlobal.sTituloMsg := TituloMsg;
+    msgMensagemGlobal.sMensagem := Msg;
+    msgMensagemGlobal.sCaminhoIcone := Icone;
+    msgMensagemGlobal.sTipo := Tipo;
+
+    if Tipo <> 'NO_CTRL' then
+    begin
+      msgMensagemGlobal.ShowModal;
+      Result := frmMensagem.bRespostaMSG;
+    end
+    else
+    begin
+      msgMensagemGlobal.Show;
+      Result := True;
+    end;
+
+
 end;
 
 function fncRemoveCaracteres(AString : string) : string;
@@ -210,6 +250,29 @@ begin
   sTmp := sDataStr.Substring(6, 4) + '-';
   sTmp := sTmp + sDataStr.Substring(3, 2) + '-';
   Result := sTmp + sDataStr.Substring(0, 2);
+end;
+
+procedure OcultarCaret(Control: TWinControl);
+begin
+    HideCaret(Control.Handle);
+end;
+
+function fncTextoEspacoFim(sTexto: string;
+  iTamanho: Integer): string;
+begin
+  if iTamanho > Trim(sTexto).Length then
+    Result := Trim(sTexto) + Espaco(iTamanho - Trim(sTexto).Length)
+  else
+    Result := Trim(sTexto).Substring(0, iTamanho);
+end;
+
+function fncTextoEspacoIni(sTexto: string;
+  iTamanho: Integer): string;
+begin
+  if iTamanho > Trim(sTexto).Length then
+    Result := Espaco(iTamanho - Trim(sTexto).Length) + Trim(sTexto)
+  else
+    Result := Trim(sTexto).Substring(iTamanho - Trim(sTexto).Length);
 end;
 
 end.

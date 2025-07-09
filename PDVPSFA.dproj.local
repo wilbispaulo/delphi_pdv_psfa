@@ -15,8 +15,8 @@
     <Transaction>2024/12/27 00:12:13.000.164,D:\Delphi\PDV_PSFA\src\views\view.login.dfm=D:\Delphi\PDV_PSFA\Unit1.dfm</Transaction>
     <Transaction>2024/12/27 00:12:13.000.164,D:\Delphi\PDV_PSFA\src\views\view.login.pas=D:\Delphi\PDV_PSFA\Unit1.pas</Transaction>
     <Transaction>2024/12/27 02:37:55.000.852,=D:\Delphi\PDV_PSFA\Unit1.pas</Transaction>
-    <Transaction>2024/12/27 02:41:33.000.759,D:\Delphi\PDV_PSFA\src\views\view.configurarservidor.pas=D:\Delphi\PDV_PSFA\Unit1.pas</Transaction>
     <Transaction>2024/12/27 02:41:33.000.759,D:\Delphi\PDV_PSFA\src\views\view.configurarservidor.dfm=D:\Delphi\PDV_PSFA\Unit1.dfm</Transaction>
+    <Transaction>2024/12/27 02:41:33.000.759,D:\Delphi\PDV_PSFA\src\views\view.configurarservidor.pas=D:\Delphi\PDV_PSFA\Unit1.pas</Transaction>
     <Transaction>2024/12/27 15:18:04.000.160,=D:\Delphi\PDV_PSFA\Unit1.pas</Transaction>
     <Transaction>2024/12/27 16:02:19.000.854,D:\Delphi\PDV_PSFA\src\views\view.mensagens.pas=D:\Delphi\PDV_PSFA\Unit1.pas</Transaction>
     <Transaction>2024/12/27 16:02:19.000.854,D:\Delphi\PDV_PSFA\src\views\view.mensagens.dfm=D:\Delphi\PDV_PSFA\Unit1.dfm</Transaction>
@@ -48,11 +48,11 @@
     <Transaction>2024/12/29 09:21:25.000.393,=D:\Delphi\PDV_PSFA\Unit1.pas</Transaction>
     <Transaction>2024/12/29 09:21:38.000.262,=D:\Delphi\PDV_PSFA\Unit2.pas</Transaction>
     <Transaction>2024/12/29 09:22:05.000.316,D:\Delphi\PDV_PSFA\src\libraries\unit_globals.pas=D:\Delphi\PDV_PSFA\Unit2.pas</Transaction>
-    <Transaction>2024/12/30 22:01:42.000.716,D:\Delphi\PDV_PSFA\src\views\view.caixa_fechado.dfm=D:\Delphi\PDV_PSFA\src\views\view.principal.dfm</Transaction>
     <Transaction>2024/12/30 22:01:42.000.716,D:\Delphi\PDV_PSFA\src\views\view.caixa_fechado.pas=D:\Delphi\PDV_PSFA\src\views\view.principal.pas</Transaction>
+    <Transaction>2024/12/30 22:01:42.000.716,D:\Delphi\PDV_PSFA\src\views\view.caixa_fechado.dfm=D:\Delphi\PDV_PSFA\src\views\view.principal.dfm</Transaction>
     <Transaction>2024/12/30 23:38:37.000.361,=D:\Delphi\PDV_PSFA\Unit1.pas</Transaction>
-    <Transaction>2024/12/30 23:41:38.000.986,D:\Delphi\PDV_PSFA\src\views\view.abrir_caixa.dfm=D:\Delphi\PDV_PSFA\Unit1.dfm</Transaction>
     <Transaction>2024/12/30 23:41:38.000.986,D:\Delphi\PDV_PSFA\src\views\view.abrir_caixa.pas=D:\Delphi\PDV_PSFA\Unit1.pas</Transaction>
+    <Transaction>2024/12/30 23:41:38.000.986,D:\Delphi\PDV_PSFA\src\views\view.abrir_caixa.dfm=D:\Delphi\PDV_PSFA\Unit1.dfm</Transaction>
     <Transaction>2025/01/02 17:29:19.000.269,D:\Delphi\PDV_PSFA\src\models\classe.usuarios.pas=D:\Delphi\PDV_PSFA\src\libraries\classe.usuarios.pas</Transaction>
     <Transaction>2025/01/02 17:30:47.000.573,=D:\Delphi\PDV_PSFA\Unit1.pas</Transaction>
     <Transaction>2025/01/02 17:30:53.000.950,=D:\Delphi\PDV_PSFA\Unit2.pas</Transaction>
@@ -66,22 +66,39 @@
     <Transaction>2025/01/10 09:33:25.000.194,D:\Delphi\PDV_PSFA\src\models\classe.pdvlanc.pas=D:\Delphi\PDV_PSFA\Unit1.pas</Transaction>
     <Transaction>2025/01/10 11:14:06.000.001,D:\Delphi\PDV_PSFA\src\models\classe.caixaaberto.pas=</Transaction>
     <Transaction>2025/01/10 13:42:35.000.989,=D:\Delphi\PDV_PSFA\Unit1.pas</Transaction>
-    <Transaction>2025/01/10 13:43:08.000.771,D:\Delphi\PDV_PSFA\Unit1.dfm=D:\Delphi\PDV_PSFA\src\views\view.caixa_aberto.dfm</Transaction>
     <Transaction>2025/01/10 13:43:08.000.771,D:\Delphi\PDV_PSFA\Unit1.pas=D:\Delphi\PDV_PSFA\src\views\view.caixa_aberto.pas</Transaction>
+    <Transaction>2025/01/10 13:43:08.000.771,D:\Delphi\PDV_PSFA\Unit1.dfm=D:\Delphi\PDV_PSFA\src\views\view.caixa_aberto.dfm</Transaction>
     <Transaction>2025/01/10 13:54:49.000.736,=D:\Delphi\PDV_PSFA\Unit1.pas</Transaction>
-    <Transaction>2025/01/10 13:57:07.000.135,D:\Delphi\PDV_PSFA\Unit1.dfm=D:\Delphi\PDV_PSFA\src\views\frame.caixa_aberto.dfm</Transaction>
     <Transaction>2025/01/10 13:57:07.000.135,D:\Delphi\PDV_PSFA\Unit1.pas=D:\Delphi\PDV_PSFA\src\views\frame.caixa_aberto.pas</Transaction>
+    <Transaction>2025/01/10 13:57:07.000.135,D:\Delphi\PDV_PSFA\Unit1.dfm=D:\Delphi\PDV_PSFA\src\views\frame.caixa_aberto.dfm</Transaction>
     <Transaction>2025/01/10 14:07:36.000.697,D:\Delphi\PDV_PSFA\src\views\frame.caixa_aberto.pas=</Transaction>
     <Transaction>2025/01/10 14:19:27.000.683,=D:\Delphi\PDV_PSFA\Unit1.pas</Transaction>
-    <Transaction>2025/01/10 14:19:45.000.808,D:\Delphi\PDV_PSFA\Unit1.dfm=D:\Delphi\PDV_PSFA\src\views\view.caixa_fechado.dfm</Transaction>
     <Transaction>2025/01/10 14:19:45.000.808,D:\Delphi\PDV_PSFA\Unit1.pas=D:\Delphi\PDV_PSFA\src\views\view.caixa_fechado.pas</Transaction>
+    <Transaction>2025/01/10 14:19:45.000.808,D:\Delphi\PDV_PSFA\Unit1.dfm=D:\Delphi\PDV_PSFA\src\views\view.caixa_fechado.dfm</Transaction>
     <Transaction>2025/01/16 21:03:45.000.444,=D:\Delphi\PDV_PSFA\Unit1.pas</Transaction>
     <Transaction>2025/01/16 21:03:51.000.702,=D:\Delphi\PDV_PSFA\Unit2.pas</Transaction>
     <Transaction>2025/01/16 21:03:59.000.890,=D:\Delphi\PDV_PSFA\Unit3.pas</Transaction>
     <Transaction>2025/01/16 21:04:49.000.468,D:\Delphi\PDV_PSFA\Unit3.pas=D:\Delphi\PDV_PSFA\src\models\classe.ticketitens.pas</Transaction>
+    <Transaction>2025/07/03 17:30:14.000.043,=D:\Delphi\PDV_PSFA\Unit1.pas</Transaction>
+    <Transaction>2025/07/03 17:30:35.000.664,=D:\Delphi\PDV_PSFA\Unit2.pas</Transaction>
+    <Transaction>2025/07/03 17:31:18.000.793,D:\Delphi\PDV_PSFA\Unit1.pas=D:\Delphi\PDV_PSFA\src\models\classe.produtos.pas</Transaction>
+    <Transaction>2025/07/04 22:14:56.000.153,=D:\Delphi\PDV_PSFA\Unit1.pas</Transaction>
+    <Transaction>2025/07/04 22:20:24.000.046,D:\Delphi\PDV_PSFA\src\models\classe.informacoes.pas=D:\Delphi\PDV_PSFA\Unit1.pas</Transaction>
+    <Transaction>2025/07/06 17:24:38.000.169,=D:\Delphi\PDV_PSFA\Unit1.pas</Transaction>
+    <Transaction>2025/07/06 17:27:47.000.313,D:\Delphi\PDV_PSFA\Unit1.pas=D:\Delphi\PDV_PSFA\src\views\view.mensagensimples.pas</Transaction>
+    <Transaction>2025/07/06 17:27:47.000.313,D:\Delphi\PDV_PSFA\Unit1.dfm=D:\Delphi\PDV_PSFA\src\views\view.mensagensimples.dfm</Transaction>
+    <Transaction>2025/07/06 18:23:25.000.364,=D:\Delphi\PDV_PSFA\Unit1.pas</Transaction>
+    <Transaction>2025/07/06 18:25:06.000.458,D:\Delphi\PDV_PSFA\Unit1.pas=D:\Delphi\PDV_PSFA\src\constrollers\unitControladorMensagem.pas</Transaction>
+    <Transaction>2025/07/07 11:58:16.000.058,=D:\Delphi\PDV_PSFA\Unit1.pas</Transaction>
+    <Transaction>2025/07/07 12:00:21.000.544,D:\Delphi\PDV_PSFA\Unit1.pas=D:\Delphi\PDV_PSFA\src\entities\entity.ticketitens.pas</Transaction>
   </Transactions>
 	<ProjectSortOrder AutoSort="0" SortType="0">
     <File Path="src"/>
+    <File Path="src\constrollers"/>
+    <File Path="src\constrollers\unitControladorMensagem.pas"/>
+    <File Path="src\entities"/>
+    <File Path="src\entities\entity.ticketitens.pas"/>
+    <File Path="src\entities\entity.produtos.pas"/>
     <File Path="src\libraries"/>
     <File Path="src\libraries\classe.conexao.pas"/>
     <File Path="src\libraries\unitDados.pas"/>
@@ -96,6 +113,8 @@
     <File Path="src\models\classe.usuarios.pas"/>
     <File Path="src\models\classe.pdvlanc.pas"/>
     <File Path="src\models\classe.ticketitens.pas"/>
+    <File Path="src\models\classe.produtos.pas"/>
+    <File Path="src\models\classe.informacoes.pas"/>
     <File Path="src\views"/>
     <File Path="src\views\view.configurarservidor.pas"/>
     <File Path="src\views\view.configurarservidor.dfm"/>
@@ -111,5 +130,7 @@
     <File Path="src\views\view.caixa_aberto.dfm"/>
     <File Path="src\views\view.caixa_fechado.pas"/>
     <File Path="src\views\view.caixa_fechado.dfm"/>
+    <File Path="src\views\view.mensagensimples.pas"/>
+    <File Path="src\views\view.mensagensimples.dfm"/>
   </ProjectSortOrder>
 </BorlandProject>

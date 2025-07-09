@@ -1,0 +1,96 @@
+unit classe.produtos;
+
+interface
+uses
+  entity.produtos,
+  FireDAC.Comp.Client,
+  FireDAC.DApt,
+  System.SysUtils,
+  unit_funcoes,
+  unit_globals,
+  Vcl.Forms;
+
+type
+  TProdutos = class(TProdutosEntity)
+  private
+    FConexao      : TFDConnection;
+    FMsgErro      : string;
+
+  public
+    property Conexao      : TFDConnection read FConexao write FConexao;
+    property MsgErro      : string read FMsgErro write FMsgErro;
+
+    constructor Create(vConexao: TFDConnection);
+    destructor Destroy; override;
+
+    procedure prcFechar;
+    procedure prcAbrir;
+    procedure prcSQLInit;
+
+    function fncProcuraProduto(sCodDigi: string): TFDQuery;
+
+  end;
+  var
+    QryConsulta : TFDQuery;
+
+implementation
+
+{ TProdutos }
+
+constructor TProdutos.Create(vConexao: TFDConnection);
+begin
+  FConexao := vConexao;
+  QryConsulta := TFDQuery.Create(nil);
+  QryConsulta.Connection := FConexao;
+end;
+
+destructor TProdutos.Destroy;
+begin
+  QryConsulta.Destroy;
+  inherited;
+end;
+
+procedure TProdutos.prcAbrir;
+var
+  lOk: Boolean;
+begin
+  try
+    try
+      FConexao.Connected := True;
+      lOk := True;
+    except on E: Exception do
+    begin
+      FMsgErro := E.Message;
+      lOk := False;
+    end;
+    end;
+  finally
+    gbServidorOk := lOk;
+  end;
+end;
+
+procedure TProdutos.prcFechar;
+begin
+  FConexao.Connected := False;
+  gbServidorOk := False;
+end;
+
+procedure TProdutos.prcSQLInit;
+begin
+  QryConsulta.Close;
+  QryConsulta.SQL.Clear;
+end;
+
+function TProdutos.fncProcuraProduto(sCodDigi: string): TFDQuery;
+begin
+  prcFechar;
+  prcAbrir;
+
+  prcSQLInit;
+  QryConsulta.SQL.Text := 'SELECT * FROM produtos WHERE coddigi = :pCoddigi';
+  QryConsulta.ParamByName('pCoddigi').AsString := sCodDigi;
+
+  Result := QryConsulta;
+end;
+
+end.

@@ -85,14 +85,14 @@ end;
 
 procedure TfrmLogin.prcLogin;
 var
-  LUsuario, LSenha,LdbSenha : string;
+  lsUsuario, lsSenha,lsDBSenha : string;
   DSUsuario : TFDQuery;
 begin
   gbLogado := False;
   gsNomeUsuario := '';
   giIdUsuario := 0;
-  LUsuario := Trim(fncRemoveCaracteres(edtNomeUsuario.Text));
-  LSenha := Trim(edtSenha.Text);
+  lsUsuario := Trim(fncRemoveCaracteres(edtNomeUsuario.Text));
+  lsSenha := Trim(edtSenha.Text);
 
   frmDados.Usuario.prcAbrir;
 
@@ -107,7 +107,7 @@ begin
     Abort;
   end;
 
-  if LUsuario = '' then
+  if lsUsuario = '' then
   begin
     fncCriarMensagem('AVISO!',
                     'DADOS OBRIGATÓRIOS',
@@ -119,7 +119,7 @@ begin
     Abort;
   end;
 
-  if LSenha = '' then
+  if lsSenha = '' then
   begin
     fncCriarMensagem('AVISO!',
                     'DADOS OBRIGATÓRIOS',
@@ -131,25 +131,25 @@ begin
     Abort;
   end;
 
-  DSUsuario := frmDados.Usuario.fncConsulta(LUsuario);
+  DSUsuario := frmDados.Usuario.fncConsulta(lsUsuario);
 
   if DSUsuario.RecordCount = 0 then
   begin
   fncCriarMensagem('LOGIN DE USUÁRIO',
                      'USUÁRIO NÃO ENCONTRADO NA BASE DE DADOS!',
-                     'não foi possível executar o login do usuário ' + LUsuario,
+                     'não foi possível executar o login do usuário ' + lsUsuario,
                      ExtractFilePath(Application.ExeName) + '\assets\erro.png',
                      'OK');
     edtNomeUsuario.SetFocus;
     Abort;
   end;
-  LdbSenha := DSUsuario.FieldByName('senha').AsString;
+  lsDBSenha := DSUsuario.FieldByName('senha').AsString;
 
-  if not THMAC<TIdHMACSHA256>.ValidatePassword(CKey, LUsuario, LSenha, LdbSenha) then
+  if not THMAC<TIdHMACSHA256>.ValidatePassword(CKey, lsUsuario, lsSenha, lsDBSenha) then
   begin
     fncCriarMensagem('LOGIN DE USUÁRIO',
                      'SENHA INCORRETA!',
-                     'não foi possível executar o login do usuário ' + LUsuario,
+                     'não foi possível executar o login do usuário ' + lsUsuario,
                      ExtractFilePath(Application.ExeName) + '\assets\erro.png',
                      'OK');
     edtSenha.SetFocus;

@@ -1,0 +1,96 @@
+unit view.mensagens;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.Buttons,
+  Vcl.Imaging.pngimage;
+
+type
+  TfrmMensagem = class(TForm)
+    pnlFundo: TPanel;
+    shpFundo: TShape;
+    pnlBarraTopo: TPanel;
+    lblTituloJanela: TLabel;
+    lblTituloMsg: TLabel;
+    lblMsg: TLabel;
+    pnlSim: TPanel;
+    btnSim: TSpeedButton;
+    pnlNao: TPanel;
+    btnNao: TSpeedButton;
+    imgMsgIcone: TImage;
+    procedure btnSimClick(Sender: TObject);
+    procedure btnNaoClick(Sender: TObject);
+    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure FormShow(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+    sTituloJanela, sTituloMsg, sMensagem, sCaminhoIcone, sTipo : string;
+    bRespostaMSG : Boolean;
+  end;
+
+var
+  frmMensagem: TfrmMensagem;
+
+implementation
+
+{$R *.dfm}
+
+procedure TfrmMensagem.btnNaoClick(Sender: TObject);
+begin
+  bRespostaMSG := False;
+  Close;
+end;
+
+procedure TfrmMensagem.btnSimClick(Sender: TObject);
+begin
+  bRespostaMSG := True;
+  Close;
+end;
+
+procedure TfrmMensagem.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  Action := caFree;
+end;
+
+procedure TfrmMensagem.FormKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  if sTipo <> 'NO_CTRL' then
+  begin
+    if Key = VK_RETURN then
+      btnSimClick(Self);
+    if Key = VK_ESCAPE then
+      btnNaoClick(Self);
+  end;
+
+end;
+
+procedure TfrmMensagem.FormShow(Sender: TObject);
+begin
+  bRespostaMSG    := False;
+  lblTituloJanela.Caption := sTituloJanela;
+  lblTituloMsg.Caption    := sTituloMsg;
+  lblMsg.Caption          := sMensagem;
+  imgMsgIcone.Picture.LoadFromFile(sCaminhoIcone);
+
+  if sTipo = 'OK' then
+  begin
+    pnlNao.Visible := False;
+    btnSim.Caption := 'OK (ENTER)';
+  end;
+
+  if sTipo = 'NO_CTRL' then
+  begin
+    pnlSim.Visible := False;
+    pnlNao.Visible := False;
+
+  end;
+
+end;
+
+end.

@@ -3,31 +3,36 @@ unit classe.ticket;
 interface
 uses
   FireDAC.Comp.Client,
+  FireDAC.Stan.Param,
+  Data.DB,
   FireDAC.DApt,
   System.SysUtils,
   unit_funcoes,
   unit_globals,
+  unitControladorMensagem,
   Vcl.Forms;
 
 type
   TTicket = class
   private
     FConexao      : TFDConnection;
+    FControladorMensagem: TControladorMensagem;
     FMsgErro      : string;
-    FPdv          : string;
     FData         : TDate;
     FNumticket    : string;
+    FPdv          : string;
     FCaixa        : string;
     FOpnome       : string;
+    FInfo1        : string;
     FInfo2        : string;
     FInfo3        : string;
-    FInfo1        : string;
     FInfo4        : string;
-    FFechado_em   : TDateTime;
-    FCancelado_em : TDateTime;
+    FTotal        : Currency;
     FAberto_em    : TDateTime;
-    FCancelado    : string;
     FFechado      : string;
+    FFechado_em   : TDateTime;
+    FCancelado    : string;
+    FCancelado_em : TDateTime;
 
   public
     property Conexao      : TFDConnection read FConexao write FConexao;
@@ -42,17 +47,28 @@ type
     property info2        : string read FInfo2 write FInfo2;
     property info3        : string read FInfo3 write FInfo3;
     property info4        : string read FInfo4 write FInfo4;
+    property total        : Currency read FTotal write FTotal;
     property aberto_em    : TDateTime read FAberto_em write FAberto_em;
-    property fechado_em   : TDateTime read FFechado_em write FFechado_em;
     property fechado      : string read FFechado write FFechado;
-    property cancelado_em : TDateTime read FCancelado_em write FCancelado_em;
+    property fechado_em   : TDateTime read FFechado_em write FFechado_em;
     property cancelado    : string read FCancelado write FCancelado;
+    property cancelado_em : TDateTime read FCancelado_em write FCancelado_em;
 
-    constructor Create(vConexao : TFDConnection);
+    constructor Create(vConexao: TFDConnection);
     destructor Destroy; override;
 
-    function fncPegaProximoTicket: string;
-    function fncTicketAberto: Boolean;
+    function fncAbreProximoTicket(
+      vPdv    : string;
+      vCaixa  : string;
+      vOpNome : string;
+      vInfo1  : string;
+      vInfo2  : string;
+      vInfo3  : string;
+      vInfo4  : string
+    ): Boolean;
+    function fncAtualizaTotal(vTotal: Currency): Boolean;
+    function fncFechaTicket: Boolean;
+    function fncTicketAberto(sPdv: string; sCaixa: string): Boolean;
     procedure prcFechar;
     procedure prcAbrir;
     procedure prcSQLInit;
@@ -69,6 +85,7 @@ implementation
 constructor TTicket.Create(vConexao: TFDConnection);
 begin
   FConexao := vConexao;
+  FControladorMensagem := TControladorMensagem.Create;
   QryConsulta := TFDQuery.Create(nil);
   QryConsulta.Connection := FConexao;
 end;
@@ -76,6 +93,7 @@ end;
 destructor TTicket.Destroy;
 begin
   QryConsulta.Destroy;
+  FControladorMensagem.Free;
   inherited;
 end;
 
@@ -93,8 +111,15 @@ end;
 
 procedure TTicket.prcFechar;
 begin
-  FConexao.Connected := False;
-  gbServidorOk := False;
+  try
+    FConexao.Connected := False;
+    gbServidorOk := False;
+  except on E: Exception do
+    begin
+      FMsgErro      := E.Message;
+      gbServidorOk  := False;
+    end;
+  end;
 end;
 
 procedure TTicket.prcSQLInit;
@@ -103,34 +128,112 @@ begin
   QryConsulta.SQL.Clear;
 end;
 
-function TTicket.fncPegaProximoTicket: string;
+function TTicket.fncAbreProximoTicket(
+  vPdv    : string;
+  vCaixa  : string;
+  vOpNome : string;
+  vInfo1  : string;
+  vInfo2  : string;
+  vInfo3  : string;
+  vInfo4  : string
+): Boolean;
 var
-  lsProxTicket : string;
+  lsProxTicket  : string;
+  ldData        : TDate;
+  ldAberto_em   : TDateTime;
 begin
-  lsProxTicket := '';
+  Result          := False;
+  ldData        := Date();
+  ldAberto_em   := Now();
+
   try
     prcFechar;
     prcAbrir;
 
     prcSQLInit;
 
-    QryConsulta.SQL.Add('SELECT numticket FROM ticket ');
-    QryConsulta.SQL.Add('WHERE pdv = :pPDV AND data = :pData ');
-    QryConsulta.SQL.Add('ORDER BY numticket ASC');
-    QryConsulta.ParamByName('pPDV').AsString := FPdv;
-    QryConsulta.ParamByName('pData').AsString := FormatDateTime('yyyy-mm-dd', Date);
-    QryConsulta.Open;
+    try
+      FConexao.StartTransaction;
+      FConexao.TxOptions.AutoCommit := False;
 
-    if QryConsulta.RecordCount = 0 then
-      lsProxTicket := '0001'
-    else
-      lsProxTicket := Format('%.4d', [StrToInt(QryConsulta.FieldByName('numticket').AsString)+1]);
+      prcSQLInit;
+
+      FControladorMensagem.Mostrar(
+        'BANCO DE DADOS',
+        'TABELA TICKET',
+        'Gravando novo TICKET...',
+        ExtractFilePath(Application.ExeName) + '\assets\timer.png'
+      );
+
+      // Bloqueia a tabela em modo exclusivo
+      FConexao.ExecSQL('LOCK TABLES ticket WRITE');
+
+      QryConsulta.SQL.Text := 'SELECT recno FROM ticket ORDER BY recno DESC LIMIT 1';
+      QryConsulta.Open;
+      if QryConsulta.RecordCount = 0 then
+        lsProxTicket := '000001'
+      else
+        lsProxTicket := Format('%.6d', [QryConsulta.FieldByName('recno').AsInteger + 1]);
+
+      prcSQLInit;
+      QryConsulta.SQL.Add('INSERT INTO ticket ');
+      QryConsulta.SQL.Add('(data, numticket, pdv, caixa, opnome, info1, info2, ');
+      QryConsulta.SQL.Add('info3, info4, total, aberto_em, fechado, cancelado, ');
+      QryConsulta.SQL.Add('fechado_em, cancelado_em) ');
+      QryConsulta.SQL.Add('VALUES (:pData, :pNumticket, :pPdv, :pCaixa, ');
+      QryConsulta.SQL.Add(':pOpnome, :pInfo1, :pInfo2, :pInfo3, :pInfo4, ');
+      QryConsulta.SQL.Add(':pTotal, :pAberto_em, :pFechado, :pCancelado, :pFechado_em, :pCancelado_em)');
+      QryConsulta.ParamByName('pData').AsDate             := ldData;
+      QryConsulta.ParamByName('pNumticket').AsString      := lsProxTicket;
+      QryConsulta.ParamByName('pPdv').AsString            := vPdv;
+      QryConsulta.ParamByName('pCaixa').AsString          := vCaixa;
+      QryConsulta.ParamByName('pOpnome').AsString         := vOpnome;
+      QryConsulta.ParamByName('pInfo1').AsString          := vInfo1;
+      QryConsulta.ParamByName('pInfo2').AsString          := vInfo2;
+      QryConsulta.ParamByName('pInfo3').AsString          := vInfo3;
+      QryConsulta.ParamByName('pInfo4').AsString          := vInfo4;
+      QryConsulta.ParamByName('pTotal').AsCurrency        := 0.00;
+      QryConsulta.ParamByName('pAberto_em').AsDateTime    := ldAberto_em;
+      QryConsulta.ParamByName('pfechado').AsString        := '';
+      QryConsulta.ParamByName('pCancelado').AsString      := '';
+      QryConsulta.ParamByName('pfechado_em').AsDateTime   := EncodeDate(1900, 1, 1);
+      QryConsulta.ParamByName('pCancelado_em').AsDateTime := EncodeDate(1900, 1, 1);
+      QryConsulta.ExecSQL;
+
+      FConexao.ExecSQL('UNLOCK TABLES');
+      FConexao.Commit;
+
+      FData         := ldData;
+      FNumticket    := lsProxTicket;
+      FPdv          := vPdv;
+      FCaixa        := vCaixa;
+      FOpnome       := vOpNome;
+      FInfo1        := vInfo1;
+      FInfo2        := vInfo2;
+      FInfo3        := vInfo3;
+      FInfo4        := vInfo4;
+      FTotal        := 0.00;
+      FAberto_em    := ldAberto_em;
+      FFechado      := '';
+      FCancelado    := '';
+
+      Result := True;
+    except
+      on E: EDatabaseError do
+      begin
+        //Libera a tabela
+        FConexao.ExecSQL('UNLOCK TABLES');
+        FConexao.Rollback;
+        Result := False;
+      end;
+    end;
   finally
-    Result := lsProxTicket;
+    FConexao.TxOptions.AutoCommit := True;
+    FControladorMensagem.Remover;
   end;
 end;
 
-function TTicket.fncTicketAberto: Boolean;
+function TTicket.fncTicketAberto(sPdv: string; sCaixa: string): Boolean;
 var
   lbTicketAberto : Boolean;
 begin
@@ -144,9 +247,9 @@ begin
     QryConsulta.SQL.Add('SELECT * FROM ticket ');
     QryConsulta.SQL.Add('WHERE pdv = :pPDV ');
     QryConsulta.SQL.Add('AND caixa = :pCaixa ');
-    QryConsulta.SQL.Add('AND fechado = "N" AND cancelado = "N"');
-    QryConsulta.ParamByName('pPDV').AsString := FPdv;
-    QryConsulta.ParamByName('pCaixa').AsString := FCaixa;
+    QryConsulta.SQL.Add('AND fechado <> "*" AND cancelado <> "*"');
+    QryConsulta.ParamByName('pPDV').AsString := sPdv;
+    QryConsulta.ParamByName('pCaixa').AsString := sCaixa;
     QryConsulta.Open;
 
     if QryConsulta.RecordCount > 0 then
@@ -171,6 +274,105 @@ begin
 
   finally
     Result := lbTicketAberto;
+  end;
+end;
+
+function TTicket.fncAtualizaTotal(vTotal: Currency): Boolean;
+var
+  lbOk : Boolean;
+begin
+  lbOk := False;
+  try
+    prcFechar;
+    prcAbrir;
+
+    FConexao.StartTransaction;
+    FConexao.TxOptions.AutoCommit := False;
+    try
+      prcSQLInit;
+      QryConsulta.SQL.Add('SELECT numticket FROM ticket ');
+      QryConsulta.SQL.Add('WHERE numticket = :pNumticket ');
+      QryConsulta.SQL.Add('AND fechado = "*" AND cancelado <> "*"');
+      QryConsulta.ParamByName('pnumticket').AsString := FNumticket;
+      QryConsulta.Open;
+
+      if QryConsulta.RecordCount > 0 then
+        lbOk := False
+      else
+      begin
+        prcSQLInit;
+        QryConsulta.SQL.Add('UPDATE ticket ');
+        QryConsulta.SQL.Add('SET total = :pTotal ');
+        QryConsulta.SQL.Add('WHERE numticket = :pNumticket');
+        QryConsulta.ParamByName('pTotal').AsCurrency := vTotal;
+        QryConsulta.ParamByName('pNumticket').AsString := FNumticket;
+        QryConsulta.ExecSQL;
+        FConexao.Commit;
+
+        FTotal        := vTotal;
+        lbOk          := True;
+      end;
+
+    except
+      FConexao.Rollback;
+      lbOk := False;
+      raise;
+    end;
+  finally
+    FConexao.TxOptions.AutoCommit := True;
+    Result := lbOk;
+  end;
+end;
+
+function TTicket.fncFechaTicket: Boolean;
+var
+  ldFechado_em : TDateTime;
+  lbOk : Boolean;
+begin
+  ldFechado_em := Now();
+  lbOk := False;
+  try
+    prcFechar;
+    prcAbrir;
+
+    FConexao.StartTransaction;
+    FConexao.TxOptions.AutoCommit := False;
+    try
+      prcSQLInit;
+      QryConsulta.SQL.Add('SELECT numticket FROM ticket ');
+      QryConsulta.SQL.Add('WHERE numticket = :pNumticket ');
+      QryConsulta.SQL.Add('AND fechado = "*" AND cancelado <> "*"');
+      QryConsulta.ParamByName('pnumticket').AsString := FNumticket;
+      QryConsulta.Open;
+
+      if QryConsulta.RecordCount > 0 then
+        lbOk := False
+      else
+      begin
+        prcSQLInit;
+        QryConsulta.SQL.Add('UPDATE ticket ');
+        QryConsulta.SQL.Add('SET total = :pTotal, fechado_em = :pFechado_em, fechado = :pFechado ');
+        QryConsulta.SQL.Add('WHERE numticket = :pNumticket');
+        QryConsulta.ParamByName('pTotal').AsCurrency := FTotal;
+        QryConsulta.ParamByName('pFechado_em').AsDateTime := ldFechado_em;
+        QryConsulta.ParamByName('pFechado').AsString := '*';
+        QryConsulta.ParamByName('pNumticket').AsString := FNumticket;
+        QryConsulta.ExecSQL;
+        FConexao.Commit;
+
+        FFechado_em   := ldFechado_em;
+        FFechado      := '*';
+        lbOk          := True;
+      end;
+
+    except
+      FConexao.Rollback;
+      lbOk := False;
+      raise;
+    end;
+  finally
+    FConexao.TxOptions.AutoCommit := True;
+    Result := lbOk;
   end;
 end;
 

@@ -11,7 +11,10 @@ object frmCaixaAberto: TfrmCaixaAberto
   Font.Height = -12
   Font.Name = 'Segoe UI'
   Font.Style = []
+  KeyPreview = True
+  OnClose = FormClose
   OnCreate = FormCreate
+  OnShow = FormShow
   TextHeight = 15
   object pnlFundoCaixaAberto: TPanel
     Left = 0
@@ -23,8 +26,6 @@ object frmCaixaAberto: TfrmCaixaAberto
     Color = 12703367
     ParentBackground = False
     TabOrder = 0
-    ExplicitLeft = 64
-    ExplicitTop = -40
     object pnlTicket: TPanel
       Left = 800
       Top = 35
@@ -73,7 +74,6 @@ object frmCaixaAberto: TfrmCaixaAberto
           BorderStyle = bsNone
           ParentColor = True
           TabOrder = 0
-          Text = 'Op.: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX   PDV: 00'
         end
         object edtTicketTopL1: TEdit
           Left = 0
@@ -89,7 +89,6 @@ object frmCaixaAberto: TfrmCaixaAberto
           BorderStyle = bsNone
           ParentColor = True
           TabOrder = 1
-          Text = 'Ticket: 0000    Caixa: X    DD/MM/YYYY  HH:MM:SS'
         end
       end
       object pnlTicketBottom: TPanel
@@ -138,7 +137,7 @@ object frmCaixaAberto: TfrmCaixaAberto
           ParentFont = False
           ReadOnly = True
           TabOrder = 0
-          Text = 'R$ 12.254,00'
+          Text = 'R$ 0,00'
         end
       end
       object lstTicketCorpo: TListBox
@@ -314,9 +313,8 @@ object frmCaixaAberto: TfrmCaixaAberto
           Margins.Right = 10
           Align = alClient
           Alignment = taRightJustify
-          Caption = '7,00'
-          ExplicitLeft = 56
-          ExplicitWidth = 64
+          ExplicitLeft = 104
+          ExplicitWidth = 16
           ExplicitHeight = 40
         end
       end
@@ -338,6 +336,7 @@ object frmCaixaAberto: TfrmCaixaAberto
           Width = 180
           Height = 50
           Align = alClient
+          Brush.Color = clWindow
           Pen.Color = 4678400
           Pen.Width = 5
           ExplicitLeft = 2
@@ -354,9 +353,10 @@ object frmCaixaAberto: TfrmCaixaAberto
           Margins.Right = 10
           Align = alClient
           Alignment = taRightJustify
-          Caption = '12.257,00'
-          ExplicitLeft = 26
-          ExplicitWidth = 144
+          Color = clBtnFace
+          ParentColor = False
+          ExplicitLeft = 154
+          ExplicitWidth = 16
           ExplicitHeight = 40
         end
       end
@@ -371,7 +371,6 @@ object frmCaixaAberto: TfrmCaixaAberto
         Margins.Bottom = 0
         BevelOuter = bvNone
         TabOrder = 2
-        TabStop = True
         StyleElements = []
         object shpCpoQtd: TShape
           Left = 0
@@ -401,12 +400,15 @@ object frmCaixaAberto: TfrmCaixaAberto
           AutoSize = False
           BevelInner = bvNone
           BevelOuter = bvNone
+          BiDiMode = bdRightToLeft
           BorderStyle = bsNone
-          MaxLength = 4
+          ParentBiDiMode = False
           TabOrder = 0
-          Text = '10'
+          Text = ''
           StyleElements = []
+          OnKeyPress = edtCpoQtdKeyPress
           MudarCor = 14087422
+          SemMarcador = True
         end
       end
       object pnlCpoProduto: TPanel
@@ -443,8 +445,7 @@ object frmCaixaAberto: TfrmCaixaAberto
           Margins.Left = 10
           Margins.Right = 10
           Align = alClient
-          Caption = 'Guaran'#225' Antarctica Zero - Lata 350mL'
-          ExplicitWidth = 576
+          ExplicitWidth = 16
           ExplicitHeight = 40
         end
       end
@@ -459,7 +460,6 @@ object frmCaixaAberto: TfrmCaixaAberto
         Margins.Bottom = 0
         BevelOuter = bvNone
         TabOrder = 4
-        TabStop = True
         StyleElements = []
         object shpCpoCod: TShape
           Left = 0
@@ -493,12 +493,18 @@ object frmCaixaAberto: TfrmCaixaAberto
           CharCase = ecUpperCase
           MaxLength = 6
           TabOrder = 0
-          Text = 'GAZ'
+          Text = ''
           StyleElements = []
+          OnKeyPress = edtCpoCodKeyPress
           MudarCor = 14087422
-          ExplicitTop = 3
+          SemMarcador = False
         end
       end
     end
+  end
+  object aplEventCaixaAberto: TApplicationEvents
+    OnIdle = aplEventCaixaAbertoIdle
+    Left = 544
+    Top = 304
   end
 end

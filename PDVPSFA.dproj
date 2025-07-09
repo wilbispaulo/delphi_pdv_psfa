@@ -154,6 +154,18 @@
             <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="src\models\classe.ticketitens.pas"/>
+        <DCCReference Include="src\models\classe.produtos.pas">
+            <Form>,
+  classe.informacoes in &apos;src\models\classe.informacoes.pas&apos;,
+  view.mensagensimples in &apos;src\views\view.mensagensimples.pas&apos; {frmMensagemSimples</Form>
+        </DCCReference>
+        <DCCReference Include="src\models\classe.informacoes.pas"/>
+        <DCCReference Include="src\views\view.mensagensimples.pas">
+            <Form>frmMensagemSimples</Form>
+        </DCCReference>
+        <DCCReference Include="src\constrollers\unitControladorMensagem.pas"/>
+        <DCCReference Include="src\entities\entity.ticketitens.pas"/>
+        <DCCReference Include="src\entities\entity.produtos.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>

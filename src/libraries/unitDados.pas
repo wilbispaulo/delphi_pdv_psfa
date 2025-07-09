@@ -12,7 +12,9 @@ uses
   classe.usuarios,
   classe.ticket,
   classe.pdvlanc,
-  classe.ticketitens;
+  classe.ticketitens,
+  classe.produtos,
+  classe.informacoes;
 
 type
   TfrmDados = class(TDataModule)
@@ -32,6 +34,8 @@ type
     PdvLanc : TPdvLanc;
     Ticket : TTicket;
     TicketItens : TTicketItens;
+    Produtos : TProdutos;
+    Informacoes : TInformacoes;
   end;
 
 var

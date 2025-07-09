@@ -1,0 +1,102 @@
+object frmMensagemSimples: TfrmMensagemSimples
+  Left = 0
+  Top = 0
+  BorderStyle = bsNone
+  ClientHeight = 277
+  ClientWidth = 640
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -12
+  Font.Name = 'Segoe UI'
+  Font.Style = []
+  FormStyle = fsStayOnTop
+  Position = poScreenCenter
+  OnClose = FormClose
+  TextHeight = 15
+  object pnlFundo: TPanel
+    Left = 0
+    Top = 0
+    Width = 640
+    Height = 277
+    Align = alClient
+    BevelOuter = bvNone
+    TabOrder = 0
+    ExplicitLeft = -60
+    ExplicitTop = -23
+    ExplicitWidth = 700
+    ExplicitHeight = 300
+    object shpFundo: TShape
+      Left = 0
+      Top = 41
+      Width = 640
+      Height = 236
+      Align = alClient
+      Pen.Color = 5861915
+      Pen.Width = 2
+      ExplicitWidth = 700
+      ExplicitHeight = 344
+    end
+    object lblTituloMsg: TLabel
+      Left = 200
+      Top = 67
+      Width = 481
+      Height = 32
+      AutoSize = False
+      Caption = 'T'#205'TULO'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBtnShadow
+      Font.Height = -19
+      Font.Name = 'Segoe UI'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+    object lblMsg: TLabel
+      Left = 200
+      Top = 97
+      Width = 385
+      Height = 126
+      AutoSize = False
+      Caption = 'Mensagem para o usu'#225'rio'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBtnShadow
+      Font.Height = -19
+      Font.Name = 'Segoe UI'
+      Font.Style = []
+      ParentFont = False
+      WordWrap = True
+    end
+    object imgMsgIcone: TImage
+      Left = 55
+      Top = 104
+      Width = 100
+      Height = 100
+      Center = True
+    end
+    object pnlBarraTopo: TPanel
+      Left = 0
+      Top = 0
+      Width = 640
+      Height = 41
+      Align = alTop
+      BevelOuter = bvNone
+      Color = 5861915
+      ParentBackground = False
+      TabOrder = 0
+      ExplicitWidth = 700
+      object lblTituloJanela: TLabel
+        Left = 32
+        Top = 3
+        Width = 111
+        Height = 32
+        Caption = 'ATEN'#199#195'O'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWhite
+        Font.Height = -24
+        Font.Name = 'Segoe UI'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+    end
+  end
+end

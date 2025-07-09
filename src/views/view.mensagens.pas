@@ -60,10 +60,14 @@ end;
 procedure TfrmMensagem.FormKeyDown(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 begin
-  if Key = VK_RETURN then
-    btnSimClick(Self);
-  if Key = VK_ESCAPE then
-    btnNaoClick(Self);
+  if sTipo <> 'NO_CTRL' then
+  begin
+    if Key = VK_RETURN then
+      btnSimClick(Self);
+    if Key = VK_ESCAPE then
+      btnNaoClick(Self);
+  end;
+
 end;
 
 procedure TfrmMensagem.FormShow(Sender: TObject);
@@ -73,11 +77,19 @@ begin
   lblTituloMsg.Caption    := sTituloMsg;
   lblMsg.Caption          := sMensagem;
   imgMsgIcone.Picture.LoadFromFile(sCaminhoIcone);
+  FormStyle := fsStayOnTop;
 
   if sTipo = 'OK' then
   begin
     pnlNao.Visible := False;
     btnSim.Caption := 'OK (ENTER)';
+  end;
+
+  if sTipo = 'NO_CTRL' then
+  begin
+    pnlSim.Visible := False;
+    pnlNao.Visible := False;
+
   end;
 
 end;

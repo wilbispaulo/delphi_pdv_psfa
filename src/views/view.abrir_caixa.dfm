@@ -68,8 +68,8 @@ object frmAbrirCaixa: TfrmAbrirCaixa
     object lblTopAbrirCaixa: TLabel
       Left = 0
       Top = 0
-      Width = 800
-      Height = 40
+      Width = 152
+      Height = 32
       Align = alClient
       Alignment = taCenter
       Caption = 'ABRIR CAIXA'
@@ -81,8 +81,6 @@ object frmAbrirCaixa: TfrmAbrirCaixa
       Font.Style = [fsBold]
       ParentColor = False
       ParentFont = False
-      ExplicitWidth = 152
-      ExplicitHeight = 32
     end
   end
   object pnlBotAbrir: TPanel
@@ -143,8 +141,9 @@ object frmAbrirCaixa: TfrmAbrirCaixa
     NumbersOnly = True
     ParentFont = False
     TabOrder = 1
-    TextHint = 'Caixa'
+    OnExit = edtCaixaExit
     MudarCor = 14087422
+    SemMarcador = False
   end
   object edtEntradaDnh: TWWPMaskEdit
     Left = 296
@@ -161,6 +160,7 @@ object frmAbrirCaixa: TfrmAbrirCaixa
     Font.Height = -24
     Font.Name = 'Segoe UI'
     Font.Style = []
+    MaxLength = 10
     ParentBiDiMode = False
     ParentFont = False
     ReadOnly = True
@@ -168,5 +168,6 @@ object frmAbrirCaixa: TfrmAbrirCaixa
     Text = '0,00'
     OnKeyPress = edtEntradaDnhKeyPress
     MudarCor = 14087422
+    SemMarcador = False
   end
 end

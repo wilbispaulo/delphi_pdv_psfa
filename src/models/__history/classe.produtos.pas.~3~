@@ -1,0 +1,48 @@
+unit classe.produtos;
+
+interface
+uses
+  FireDAC.Comp.Client,
+  FireDAC.DApt,
+  System.SysUtils,
+  unit_funcoes,
+  unit_globals,
+  Vcl.Forms;
+
+type
+  TProdutos = class
+  private
+    FConexao      : TFDConnection;
+    FMsgErro      : string;
+    FCodGrupo     : string;
+    FCodProd      : string;
+    FCodDigi      : string;
+    FDescr        : string;
+    FDescrCurta   : string;
+    FUnd          : string;
+    FValUnit      : string;
+    FInativo      : string;
+    FImprAtend1   : string;
+    FImprAtend2   : string;
+    FQtd1         : Integer;
+    FValUnit1     : Currency;
+    FAtiva1       : string;
+    FQtd2         : Integer;
+    FValUnit2     : Currency;
+    FAtiva2       : string;
+    FQtd3         : Integer;
+    FValUnit3     : Currency;
+    FAtiva3       : string;
+    FDescGrupo    : string;
+    FCancelado    : string;
+    FCriado_em    : TDateTime;
+    FAlterado_em  : TDateTime;
+  public
+
+
+
+  end;
+
+implementation
+
+end.

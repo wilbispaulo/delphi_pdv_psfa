@@ -20,9 +20,9 @@ EditViewName=
 
 [ClosedView_RDpcRGVscGhpXFBEVl9QU0ZBXHNyY1x2aWV3c1x2aWV3LmxvZ2luLnBhcw==]
 Module=D:\Delphi\PDV_PSFA\src\views\view.login.pas
-CursorX=1
-CursorY=134
-TopLine=23
+CursorX=30
+CursorY=154
+TopLine=133
 LeftCol=1
 Elisions=
 Bookmarks=
@@ -30,9 +30,9 @@ EditViewName=D:\Delphi\PDV_PSFA\src\views\view.login.pas
 
 [ClosedView_RDpcRGVscGhpXFBEVl9QU0ZBXFBEVlBTRkEuZHBy]
 Module=D:\Delphi\PDV_PSFA\PDVPSFA.dpr
-CursorX=24
-CursorY=37
-TopLine=10
+CursorX=1
+CursorY=1
+TopLine=1
 LeftCol=1
 Elisions=
 Bookmarks=
@@ -41,8 +41,8 @@ EditViewName=D:\Delphi\PDV_PSFA\PDVPSFA.dpr
 [ClosedView_RDpcRGVscGhpXFBEVl9QU0ZBXHNyY1x2aWV3c1x2aWV3Lm1lbnNhZ2Vucy5wYXM=]
 Module=D:\Delphi\PDV_PSFA\src\views\view.mensagens.pas
 CursorX=1
-CursorY=37
-TopLine=19
+CursorY=11
+TopLine=1
 LeftCol=1
 Elisions=
 Bookmarks=
@@ -50,9 +50,9 @@ EditViewName=D:\Delphi\PDV_PSFA\src\views\view.mensagens.pas
 
 [ClosedView_RDpcRGVscGhpXFBEVl9QU0ZBXHNyY1xsaWJyYXJpZXNcdW5pdF9mdW5jb2VzLnBhcw==]
 Module=D:\Delphi\PDV_PSFA\src\libraries\unit_funcoes.pas
-CursorX=44
-CursorY=177
-TopLine=154
+CursorX=1
+CursorY=64
+TopLine=49
 LeftCol=1
 Elisions=
 Bookmarks=
@@ -60,9 +60,9 @@ EditViewName=D:\Delphi\PDV_PSFA\src\libraries\unit_funcoes.pas
 
 [ClosedView_RDpcRGVscGhpXFBEVl9QU0ZBXHNyY1xsaWJyYXJpZXNcY2xhc3NlLmNvbmV4YW8ucGFz]
 Module=D:\Delphi\PDV_PSFA\src\libraries\classe.conexao.pas
-CursorX=31
-CursorY=172
-TopLine=145
+CursorX=1
+CursorY=85
+TopLine=1
 LeftCol=1
 Elisions=
 Bookmarks=
@@ -70,9 +70,9 @@ EditViewName=D:\Delphi\PDV_PSFA\src\libraries\classe.conexao.pas
 
 [ClosedView_RDpcRGVscGhpXFBEVl9QU0ZBXHNyY1xsaWJyYXJpZXNcdW5pdERhZG9zLnBhcw==]
 Module=D:\Delphi\PDV_PSFA\src\libraries\unitDados.pas
-CursorX=1
-CursorY=39
-TopLine=20
+CursorX=58
+CursorY=40
+TopLine=1
 LeftCol=1
 Elisions=
 Bookmarks=
@@ -150,9 +150,9 @@ EditViewName=D:\Delphi\PDV_PSFA\src\libraries\classe.login.pas
 
 [ClosedView_RDpcRGVscGhpXFBEVl9QU0ZBXHNyY1xsaWJyYXJpZXNcdW5pdF9nbG9iYWxzLnBhcw==]
 Module=D:\Delphi\PDV_PSFA\src\libraries\unit_globals.pas
-CursorX=43
-CursorY=23
-TopLine=1
+CursorX=1
+CursorY=20
+TopLine=7
 LeftCol=1
 Elisions=
 Bookmarks=
@@ -300,9 +300,9 @@ EditViewName=D:\Delphi\PDV_PSFA\src\views\view.principal.pas
 
 [ClosedView_RDpcRGVscGhpXFBEVl9QU0ZBXHNyY1x2aWV3c1x2aWV3LmNhaXhhX2ZlY2hhZG8ucGFz]
 Module=D:\Delphi\PDV_PSFA\src\views\view.caixa_fechado.pas
-CursorX=11
-CursorY=36
-TopLine=29
+CursorX=1
+CursorY=37
+TopLine=20
 LeftCol=1
 Elisions=
 Bookmarks=
@@ -310,9 +310,9 @@ EditViewName=D:\Delphi\PDV_PSFA\src\views\view.caixa_fechado.pas
 
 [ClosedView_RDpcRGVscGhpXFBEVl9QU0ZBXHNyY1x2aWV3c1x2aWV3LmFicmlyX2NhaXhhLnBhcw==]
 Module=D:\Delphi\PDV_PSFA\src\views\view.abrir_caixa.pas
-CursorX=69
-CursorY=124
-TopLine=99
+CursorX=1
+CursorY=114
+TopLine=91
 LeftCol=1
 Elisions=
 Bookmarks=
@@ -390,9 +390,9 @@ EditViewName=
 
 [ClosedView_RDpcRGVscGhpXFBEVl9QU0ZBXHNyY1xtb2RlbHNcY2xhc3NlLnVzdWFyaW9zLnBhcw==]
 Module=D:\Delphi\PDV_PSFA\src\models\classe.usuarios.pas
-CursorX=48
-CursorY=96
-TopLine=91
+CursorX=58
+CursorY=107
+TopLine=94
 LeftCol=1
 Elisions=
 Bookmarks=
@@ -440,9 +440,9 @@ EditViewName=
 
 [ClosedView_RDpcRGVscGhpXFBEVl9QU0ZBXHNyY1xtb2RlbHNcY2xhc3NlLnRpY2tldC5wYXM=]
 Module=D:\Delphi\PDV_PSFA\src\models\classe.ticket.pas
-CursorX=51
-CursorY=89
-TopLine=103
+CursorX=1
+CursorY=139
+TopLine=355
 LeftCol=1
 Elisions=
 Bookmarks=
@@ -451,8 +451,8 @@ EditViewName=D:\Delphi\PDV_PSFA\src\models\classe.ticket.pas
 [ClosedView_RDpcRGVscGhpXFBEVl9QU0ZBXHNyY1x2aWV3c1x2aWV3LmNhaXhhLnBhcw==]
 Module=D:\Delphi\PDV_PSFA\src\views\view.caixa.pas
 CursorX=1
-CursorY=56
-TopLine=34
+CursorY=126
+TopLine=102
 LeftCol=1
 Elisions=
 Bookmarks=
@@ -461,8 +461,8 @@ EditViewName=D:\Delphi\PDV_PSFA\src\views\view.caixa.pas
 [ClosedView_RDpcRGVscGhpXFBEVl9QU0ZBXHNyY1xtb2RlbHNcY2xhc3NlLnBkdmxhbmMucGFz]
 Module=D:\Delphi\PDV_PSFA\src\models\classe.pdvlanc.pas
 CursorX=1
-CursorY=24
-TopLine=10
+CursorY=132
+TopLine=115
 LeftCol=1
 Elisions=
 Bookmarks=
@@ -470,9 +470,9 @@ EditViewName=D:\Delphi\PDV_PSFA\src\models\classe.pdvlanc.pas
 
 [ClosedView_RDpcRGVscGhpXFBEVl9QU0ZBXHNyY1x2aWV3c1x2aWV3LmNhaXhhX2FiZXJ0by5wYXM=]
 Module=D:\Delphi\PDV_PSFA\src\views\view.caixa_aberto.pas
-CursorX=1
-CursorY=255
-TopLine=1
+CursorX=31
+CursorY=487
+TopLine=187
 LeftCol=1
 Elisions=
 Bookmarks=
@@ -510,9 +510,9 @@ EditViewName=c:\program files (x86)\embarcadero\studio\23.0\source\rtl\common\Sy
 
 [ClosedView_RDpcRGVscGhpXFBEVl9QU0ZBXHNyY1xtb2RlbHNcY2xhc3NlLnRpY2tldGl0ZW5zLnBhcw==]
 Module=D:\Delphi\PDV_PSFA\src\models\classe.ticketitens.pas
-CursorX=40
-CursorY=116
-TopLine=103
+CursorX=31
+CursorY=36
+TopLine=13
 LeftCol=1
 Elisions=
 Bookmarks=
@@ -547,4 +547,394 @@ LeftCol=1
 Elisions={{2051,4},{2067,15},{'TScrollWindow'}}{{2161,4},{2265,15},{'TMainMenuBarStyleHook'}}
 Bookmarks=
 EditViewName=
+[ClosedView_YzpccHJvZ3JhbSBmaWxlcyAoeDg2KVxlbWJhcmNhZGVyb1xzdHVkaW9cMjMuMFxTT1VSQ0VcVkNM
+XFZjbC5Db250cm9scy5wYXM=]
+Module=c:\program files (x86)\embarcadero\studio\23.0\SOURCE\VCL\Vcl.Controls.pas
+CursorX=1
+CursorY=10831
+TopLine=10811
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=c:\program files (x86)\embarcadero\studio\23.0\SOURCE\VCL\Vcl.Controls.pas
+[ClosedView_YzpccHJvZ3JhbSBmaWxlcyAoeDg2KVxlbWJhcmNhZGVyb1xzdHVkaW9cMjMuMFxTT1VSQ0VcVkNM
+XFZjbC5Gb3Jtcy5wYXM=]
+Module=c:\program files (x86)\embarcadero\studio\23.0\SOURCE\VCL\Vcl.Forms.pas
+CursorX=1
+CursorY=13297
+TopLine=13265
+LeftCol=1
+Elisions={{2051,4},{2067,15},{'TScrollWindow'}}{{2161,4},{2265,15},{'TMainMenuBarStyleHook'}}
+Bookmarks=
+EditViewName=c:\program files (x86)\embarcadero\studio\23.0\SOURCE\VCL\Vcl.Forms.pas
+[ClosedView_YzpccHJvZ3JhbSBmaWxlcyAoeDg2KVxlbWJhcmNhZGVyb1xzdHVkaW9cMjMuMFxTT1VSQ0VcVkNM
+XFZjbC5Gb3Jtcy5wYXM=]
+Module=c:\program files (x86)\embarcadero\studio\23.0\SOURCE\VCL\Vcl.Forms.pas
+CursorX=1
+CursorY=13297
+TopLine=13265
+LeftCol=1
+Elisions={{2051,4},{2067,15},{'TScrollWindow'}}{{2161,4},{2265,15},{'TMainMenuBarStyleHook'}}
+Bookmarks=
+EditViewName=c:\program files (x86)\embarcadero\studio\23.0\SOURCE\VCL\Vcl.Forms.pas
+[ClosedView_YzpccHJvZ3JhbSBmaWxlcyAoeDg2KVxlbWJhcmNhZGVyb1xzdHVkaW9cMjMuMFxTT1VSQ0VcVkNM
+XFZjbC5Db250cm9scy5wYXM=]
+Module=c:\program files (x86)\embarcadero\studio\23.0\SOURCE\VCL\Vcl.Controls.pas
+CursorX=1
+CursorY=7699
+TopLine=7685
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=c:\program files (x86)\embarcadero\studio\23.0\SOURCE\VCL\Vcl.Controls.pas
+[ClosedView_YzpccHJvZ3JhbSBmaWxlcyAoeDg2KVxlbWJhcmNhZGVyb1xzdHVkaW9cMjMuMFxTT1VSQ0VcVkNM
+XFZjbC5Db250cm9scy5wYXM=]
+Module=c:\program files (x86)\embarcadero\studio\23.0\SOURCE\VCL\Vcl.Controls.pas
+CursorX=1
+CursorY=7699
+TopLine=7685
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=c:\program files (x86)\embarcadero\studio\23.0\SOURCE\VCL\Vcl.Controls.pas
+[ClosedView_YzpccHJvZ3JhbSBmaWxlcyAoeDg2KVxlbWJhcmNhZGVyb1xzdHVkaW9cMjMuMFxTT1VSQ0VcUlRM
+XFNZU1xTeXN0ZW0ucGFz]
+Module=c:\program files (x86)\embarcadero\studio\23.0\SOURCE\RTL\SYS\System.pas
+CursorX=1
+CursorY=6346
+TopLine=6336
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=c:\program files (x86)\embarcadero\studio\23.0\SOURCE\RTL\SYS\System.pas
+[ClosedView_YzpccHJvZ3JhbSBmaWxlcyAoeDg2KVxlbWJhcmNhZGVyb1xzdHVkaW9cMjMuMFxTT1VSQ0VcUlRM
+XFNZU1xTeXN0ZW0ucGFz]
+Module=c:\program files (x86)\embarcadero\studio\23.0\SOURCE\RTL\SYS\System.pas
+CursorX=1
+CursorY=6346
+TopLine=6336
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=
+[ClosedView_YzpccHJvZ3JhbSBmaWxlcyAoeDg2KVxlbWJhcmNhZGVyb1xzdHVkaW9cMjMuMFxTT1VSQ0VcUlRM
+XFNZU1xTeXN0ZW0ucGFz]
+Module=c:\program files (x86)\embarcadero\studio\23.0\SOURCE\RTL\SYS\System.pas
+CursorX=1
+CursorY=6346
+TopLine=6336
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=c:\program files (x86)\embarcadero\studio\23.0\SOURCE\RTL\SYS\System.pas
+[ClosedView_YzpccHJvZ3JhbSBmaWxlcyAoeDg2KVxlbWJhcmNhZGVyb1xzdHVkaW9cMjMuMFxTT1VSQ0VcUlRM
+XFNZU1xTeXN0ZW0ucGFz]
+Module=c:\program files (x86)\embarcadero\studio\23.0\SOURCE\RTL\SYS\System.pas
+CursorX=1
+CursorY=6346
+TopLine=6332
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=
+[ClosedView_YzpccHJvZ3JhbSBmaWxlcyAoeDg2KVxlbWJhcmNhZGVyb1xzdHVkaW9cMjMuMFxTT1VSQ0VcVkNM
+XFZjbC5Gb3Jtcy5wYXM=]
+Module=c:\program files (x86)\embarcadero\studio\23.0\SOURCE\VCL\Vcl.Forms.pas
+CursorX=1
+CursorY=5287
+TopLine=5273
+LeftCol=1
+Elisions={{2051,4},{2067,15},{'TScrollWindow'}}{{2161,4},{2265,15},{'TMainMenuBarStyleHook'}}
+Bookmarks=
+EditViewName=c:\program files (x86)\embarcadero\studio\23.0\SOURCE\VCL\Vcl.Forms.pas
+[ClosedView_YzpccHJvZ3JhbSBmaWxlcyAoeDg2KVxlbWJhcmNhZGVyb1xzdHVkaW9cMjMuMFxTT1VSQ0VcUlRM
+XFNZU1xTeXN0ZW0ucGFz]
+Module=c:\program files (x86)\embarcadero\studio\23.0\SOURCE\RTL\SYS\System.pas
+CursorX=1
+CursorY=41820
+TopLine=41806
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=c:\program files (x86)\embarcadero\studio\23.0\SOURCE\RTL\SYS\System.pas
+[ClosedView_YzpccHJvZ3JhbSBmaWxlcyAoeDg2KVxlbWJhcmNhZGVyb1xzdHVkaW9cMjMuMFxTT1VSQ0VcUlRM
+XFNZU1xTeXN0ZW0ucGFz]
+Module=c:\program files (x86)\embarcadero\studio\23.0\SOURCE\RTL\SYS\System.pas
+CursorX=1
+CursorY=41820
+TopLine=41806
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=c:\program files (x86)\embarcadero\studio\23.0\SOURCE\RTL\SYS\System.pas
+[ClosedView_YzpccHJvZ3JhbSBmaWxlcyAoeDg2KVxlbWJhcmNhZGVyb1xzdHVkaW9cMjMuMFxTT1VSQ0VcUlRM
+XFNZU1xTeXN0ZW0ucGFz]
+Module=c:\program files (x86)\embarcadero\studio\23.0\SOURCE\RTL\SYS\System.pas
+CursorX=1
+CursorY=6346
+TopLine=6332
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=
+[ClosedView_YzpccHJvZ3JhbSBmaWxlcyAoeDg2KVxlbWJhcmNhZGVyb1xzdHVkaW9cMjMuMFxTT1VSQ0VcUlRM
+XFNZU1xTeXN0ZW0ucGFz]
+Module=c:\program files (x86)\embarcadero\studio\23.0\SOURCE\RTL\SYS\System.pas
+CursorX=1
+CursorY=6346
+TopLine=6332
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=
+[ClosedView_YzpccHJvZ3JhbSBmaWxlcyAoeDg2KVxlbWJhcmNhZGVyb1xzdHVkaW9cMjMuMFxTT1VSQ0VcUlRM
+XFNZU1xTeXN0ZW0ucGFz]
+Module=c:\program files (x86)\embarcadero\studio\23.0\SOURCE\RTL\SYS\System.pas
+CursorX=1
+CursorY=19711
+TopLine=19697
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=c:\program files (x86)\embarcadero\studio\23.0\SOURCE\RTL\SYS\System.pas
+[ClosedView_YzpccHJvZ3JhbSBmaWxlcyAoeDg2KVxlbWJhcmNhZGVyb1xzdHVkaW9cMjMuMFxTT1VSQ0VcUlRM
+XFNZU1xTeXN0ZW0ucGFz]
+Module=c:\program files (x86)\embarcadero\studio\23.0\SOURCE\RTL\SYS\System.pas
+CursorX=1
+CursorY=19711
+TopLine=19697
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=c:\program files (x86)\embarcadero\studio\23.0\SOURCE\RTL\SYS\System.pas
+[ClosedView_YzpccHJvZ3JhbSBmaWxlcyAoeDg2KVxlbWJhcmNhZGVyb1xzdHVkaW9cMjMuMFxTT1VSQ0VcUlRM
+XFNZU1xTeXN0ZW0ucGFz]
+Module=c:\program files (x86)\embarcadero\studio\23.0\SOURCE\RTL\SYS\System.pas
+CursorX=1
+CursorY=6346
+TopLine=6332
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=
+[ClosedView_YzpccHJvZ3JhbSBmaWxlcyAoeDg2KVxlbWJhcmNhZGVyb1xzdHVkaW9cMjMuMFxTT1VSQ0VcUlRM
+XFNZU1xTeXN0ZW0ucGFz]
+Module=c:\program files (x86)\embarcadero\studio\23.0\SOURCE\RTL\SYS\System.pas
+CursorX=1
+CursorY=41820
+TopLine=41800
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=c:\program files (x86)\embarcadero\studio\23.0\SOURCE\RTL\SYS\System.pas
+[ClosedView_YzpccHJvZ3JhbSBmaWxlcyAoeDg2KVxlbWJhcmNhZGVyb1xzdHVkaW9cMjMuMFxTT1VSQ0VcUlRM
+XFNZU1xTeXN0ZW0ucGFz]
+Module=c:\program files (x86)\embarcadero\studio\23.0\SOURCE\RTL\SYS\System.pas
+CursorX=1
+CursorY=41820
+TopLine=41800
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=c:\program files (x86)\embarcadero\studio\23.0\SOURCE\RTL\SYS\System.pas
+
+[ClosedView_RDpcRGVscGhpXFBEVl9QU0ZBXHNyY1xtb2RlbHNcY2xhc3NlLnByb2R1dG9zLnBhcw==]
+Module=D:\Delphi\PDV_PSFA\src\models\classe.produtos.pas
+CursorX=7
+CursorY=126
+TopLine=106
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=D:\Delphi\PDV_PSFA\src\models\classe.produtos.pas
+[ClosedView_YzpccHJvZ3JhbSBmaWxlcyAoeDg2KVxlbWJhcmNhZGVyb1xzdHVkaW9cMjMuMFxTT1VSQ0VcVkNM
+XFZjbC5Db250cm9scy5wYXM=]
+Module=c:\program files (x86)\embarcadero\studio\23.0\SOURCE\VCL\Vcl.Controls.pas
+CursorX=1
+CursorY=10831
+TopLine=10815
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=c:\program files (x86)\embarcadero\studio\23.0\SOURCE\VCL\Vcl.Controls.pas
+[ClosedView_YzpccHJvZ3JhbSBmaWxlcyAoeDg2KVxlbWJhcmNhZGVyb1xzdHVkaW9cMjMuMFxTT1VSQ0VcVkNM
+XFZjbC5Db250cm9scy5wYXM=]
+Module=c:\program files (x86)\embarcadero\studio\23.0\SOURCE\VCL\Vcl.Controls.pas
+CursorX=1
+CursorY=11156
+TopLine=11139
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=c:\program files (x86)\embarcadero\studio\23.0\SOURCE\VCL\Vcl.Controls.pas
+[ClosedView_YzpccHJvZ3JhbSBmaWxlcyAoeDg2KVxlbWJhcmNhZGVyb1xzdHVkaW9cMjMuMFxTT1VSQ0VcVkNM
+XFZjbC5Db250cm9scy5wYXM=]
+Module=c:\program files (x86)\embarcadero\studio\23.0\SOURCE\VCL\Vcl.Controls.pas
+CursorX=1
+CursorY=11156
+TopLine=11139
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=c:\program files (x86)\embarcadero\studio\23.0\SOURCE\VCL\Vcl.Controls.pas
+[ClosedView_YzpccHJvZ3JhbSBmaWxlcyAoeDg2KVxlbWJhcmNhZGVyb1xzdHVkaW9cMjMuMFxTT1VSQ0VcVkNM
+XFZjbC5Db250cm9scy5wYXM=]
+Module=c:\program files (x86)\embarcadero\studio\23.0\SOURCE\VCL\Vcl.Controls.pas
+CursorX=1
+CursorY=12273
+TopLine=12263
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=
+
+[ClosedView_RDpcRGVscGhpXFBEVl9QU0ZBXHNyY1xtb2RlbHNcY2xhc3NlLmluZm9ybWFjb2VzLnBhcw==]
+Module=D:\Delphi\PDV_PSFA\src\models\classe.informacoes.pas
+CursorX=1
+CursorY=95
+TopLine=90
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=D:\Delphi\PDV_PSFA\src\models\classe.informacoes.pas
+[ClosedView_YzpccHJvZ3JhbSBmaWxlcyAoeDg2KVxlbWJhcmNhZGVyb1xzdHVkaW9cMjMuMFxTT1VSQ0VcVkNM
+XFZjbC5Gb3Jtcy5wYXM=]
+Module=c:\program files (x86)\embarcadero\studio\23.0\SOURCE\VCL\Vcl.Forms.pas
+CursorX=1
+CursorY=5286
+TopLine=5271
+LeftCol=1
+Elisions={{2051,4},{2067,15},{'TScrollWindow'}}{{2161,4},{2265,15},{'TMainMenuBarStyleHook'}}
+Bookmarks=
+EditViewName=
+
+[ClosedView_RDpcRGVscGhpXFBEVl9QU0ZBXHNyY1x2aWV3c1x2aWV3Lm1lbnNhZ2Vuc2ltcGxlcy5wYXM=]
+Module=D:\Delphi\PDV_PSFA\src\views\view.mensagensimples.pas
+CursorX=1
+CursorY=29
+TopLine=4
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=D:\Delphi\PDV_PSFA\src\views\view.mensagensimples.pas
+[ClosedView_RDpcRGVscGhpXFBEVl9QU0ZBXHNyY1xjb25zdHJvbGxlcnNcdW5pdENvbnRyb2xhZG9yTWVuc2Fn
+ZW0ucGFz]
+Module=D:\Delphi\PDV_PSFA\src\constrollers\unitControladorMensagem.pas
+CursorX=28
+CursorY=13
+TopLine=1
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=D:\Delphi\PDV_PSFA\src\constrollers\unitControladorMensagem.pas
+[ClosedView_RDpcRGVscGhpXFBEVl9QU0ZBXHNyY1xjb25zdHJvbGxlcnNcdW5pdENvbnRyb2xhZG9yTWVuc2Fn
+ZW0ucGFz]
+Module=D:\Delphi\PDV_PSFA\src\constrollers\unitControladorMensagem.pas
+CursorX=30
+CursorY=29
+TopLine=16
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=D:\Delphi\PDV_PSFA\src\constrollers\unitControladorMensagem.pas
+[ClosedView_RDpcRGVscGhpXFBEVl9QU0ZBXHNyY1xjb25zdHJvbGxlcnNcdW5pdENvbnRyb2xhZG9yTWVuc2Fn
+ZW0ucGFz]
+Module=D:\Delphi\PDV_PSFA\src\constrollers\unitControladorMensagem.pas
+CursorX=48
+CursorY=37
+TopLine=22
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=D:\Delphi\PDV_PSFA\src\constrollers\unitControladorMensagem.pas
+[ClosedView_RDpcRGVscGhpXFBEVl9QU0ZBXHNyY1xjb25zdHJvbGxlcnNcdW5pdENvbnRyb2xhZG9yTWVuc2Fn
+ZW0ucGFz]
+Module=D:\Delphi\PDV_PSFA\src\constrollers\unitControladorMensagem.pas
+CursorX=3
+CursorY=35
+TopLine=22
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=D:\Delphi\PDV_PSFA\src\constrollers\unitControladorMensagem.pas
+[ClosedView_RDpcRGVscGhpXFBEVl9QU0ZBXHNyY1xjb25zdHJvbGxlcnNcdW5pdENvbnRyb2xhZG9yTWVuc2Fn
+ZW0ucGFz]
+Module=D:\Delphi\PDV_PSFA\src\constrollers\unitControladorMensagem.pas
+CursorX=31
+CursorY=35
+TopLine=22
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=D:\Delphi\PDV_PSFA\src\constrollers\unitControladorMensagem.pas
+[ClosedView_RDpcRGVscGhpXFBEVl9QU0ZBXHNyY1xjb25zdHJvbGxlcnNcdW5pdENvbnRyb2xhZG9yTWVuc2Fn
+ZW0ucGFz]
+Module=D:\Delphi\PDV_PSFA\src\constrollers\unitControladorMensagem.pas
+CursorX=29
+CursorY=43
+TopLine=22
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=D:\Delphi\PDV_PSFA\src\constrollers\unitControladorMensagem.pas
+[ClosedView_RDpcRGVscGhpXFBEVl9QU0ZBXHNyY1xjb25zdHJvbGxlcnNcdW5pdENvbnRyb2xhZG9yTWVuc2Fn
+ZW0ucGFz]
+Module=D:\Delphi\PDV_PSFA\src\constrollers\unitControladorMensagem.pas
+CursorX=17
+CursorY=7
+TopLine=1
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=D:\Delphi\PDV_PSFA\src\constrollers\unitControladorMensagem.pas
+[ClosedView_YzpccHJvZ3JhbSBmaWxlcyAoeDg2KVxlbWJhcmNhZGVyb1xzdHVkaW9cMjMuMFxTT1VSQ0VcVkNM
+XFZjbC5Gb3Jtcy5wYXM=]
+Module=c:\program files (x86)\embarcadero\studio\23.0\SOURCE\VCL\Vcl.Forms.pas
+CursorX=1
+CursorY=5471
+TopLine=5427
+LeftCol=1
+Elisions={{2051,4},{2067,15},{'TScrollWindow'}}{{2161,4},{2265,15},{'TMainMenuBarStyleHook'}}
+Bookmarks=
+EditViewName=
+[ClosedView_RDpcRGVscGhpXFBEVl9QU0ZBXHNyY1xjb25zdHJvbGxlcnNcdW5pdENvbnRyb2xhZG9yTWVuc2Fn
+ZW0ucGFz]
+Module=D:\Delphi\PDV_PSFA\src\constrollers\unitControladorMensagem.pas
+CursorX=1
+CursorY=37
+TopLine=16
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=D:\Delphi\PDV_PSFA\src\constrollers\unitControladorMensagem.pas
+[ClosedView_RDpcRGVscGhpXFBEVl9QU0ZBXHNyY1xjb25zdHJvbGxlcnNcdW5pdENvbnRyb2xhZG9yTWVuc2Fn
+ZW0ucGFz]
+Module=D:\Delphi\PDV_PSFA\src\constrollers\unitControladorMensagem.pas
+CursorX=53
+CursorY=31
+TopLine=22
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=D:\Delphi\PDV_PSFA\src\constrollers\unitControladorMensagem.pas
+
+[ClosedView_RDpcRGVscGhpXFBEVl9QU0ZBXHNyY1xlbnRpdGllc1xlbnRpdHkudGlja2V0aXRlbnMucGFz]
+Module=D:\Delphi\PDV_PSFA\src\entities\entity.ticketitens.pas
+CursorX=1
+CursorY=6
+TopLine=4
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=D:\Delphi\PDV_PSFA\src\entities\entity.ticketitens.pas
+
+[ClosedView_RDpcRGVscGhpXFBEVl9QU0ZBXHNyY1xlbnRpdGllc1xlbnRpdHkucHJvZHV0b3MucGFz]
+Module=D:\Delphi\PDV_PSFA\src\entities\entity.produtos.pas
+CursorX=1
+CursorY=16
+TopLine=1
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=D:\Delphi\PDV_PSFA\src\entities\entity.produtos.pas
 

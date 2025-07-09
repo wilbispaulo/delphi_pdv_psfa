@@ -1,0 +1,192 @@
+unit view.caixa;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls, unit_globals,
+  Vcl.Imaging.pngimage, unitDados, Vcl.Menus, Data.DB,
+  Vcl.Grids, Vcl.DBGrids, Vcl.Mask, Vcl.DBCtrls, classe.ticket, WWPMaskEdit,
+  classe.pdvlanc, view.caixa_aberto, view.caixa_fechado, unit_funcoes;
+
+type
+  TfrmCaixa = class(TForm)
+    pnlInfo: TPanel;
+    pnlInfoCaixa: TPanel;
+    lblLInfoCaixa: TLabel;
+    lblInfoCaixa: TLabel;
+    pnlInfoOp: TPanel;
+    lblLInfoOp: TLabel;
+    lblInfoOp: TLabel;
+    pnlInfoTicket: TPanel;
+    lblLInfoTicket: TLabel;
+    lblInfoTicket: TLabel;
+    pnlInfoStatus: TPanel;
+    lblInfoStatus: TLabel;
+    pnlInfoHora: TPanel;
+    lblInfoHora: TLabel;
+    pnlInfoData: TPanel;
+    lblInfoData: TLabel;
+    tmrPDVHora: TTimer;
+    pnlStatus: TPanel;
+    pnlStatusServidor: TPanel;
+    imgServidor: TImage;
+    imgStatusServidor: TImage;
+    lblServidorEnd: TLabel;
+    pnlVersao: TPanel;
+    lblStatusVersao: TLabel;
+    lblPDV: TLabel;
+    lblPDVId: TLabel;
+    pnlProp: TPanel;
+    pnlCaixa: TPanel;
+    procedure tmrPDVHoraTimer(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    function fncServidorOk(): Boolean;
+    procedure AbreCaixa(iModo: Integer);
+    procedure FormCreate(Sender: TObject);
+    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+  private
+    { Private declarations }
+
+
+  public
+    { Public declarations }
+    frmCaixaAberto: TfrmCaixaAberto;
+    frmCaixaFechado: TfrmCaixaFechado;
+    procedure prcMostraFormCaixa;
+    procedure prcLiberaFormsFilhos;
+  end;
+
+var
+  frmCaixa: TfrmCaixa;
+
+implementation
+
+{$R *.dfm}
+
+procedure TfrmCaixa.AbreCaixa(iModo: Integer);
+begin
+
+  if iModo = 1 then           // Abre CAIXA no modo NOVO CAIXA
+  begin
+    // Abre o formulário ABRIR_CAIXA como modal
+
+  end else if iModo = 2 then  // Abre CAIXA no modo CONTINUA CAIXA
+  begin
+    // Verifica se esse CAIXA tem TICKET aberto no BD
+    if frmDados.Ticket.fncTicketAberto then
+    begin
+      // Abre o TICKET na tela
+
+
+
+    end;
+
+  end;
+end;
+
+function TfrmCaixa.fncServidorOk: Boolean;
+begin
+  if frmDados.FDConnection.Connected then
+  begin
+    imgStatusServidor.Picture.LoadFromFile(ExtractFilePath(Application.ExeName) + '\assets\ok48.png');
+    lblServidorEnd.Caption := frmDados.Conexao.Servidor;
+    Result := True;
+  end
+  else
+  begin
+    imgStatusServidor.Picture.LoadFromFile(ExtractFilePath(Application.ExeName) + '\assets\erro.png');
+    lblServidorEnd.Caption := frmDados.Conexao.Servidor;
+    Result := False;
+  end;
+end;
+
+procedure TfrmCaixa.FormCreate(Sender: TObject);
+begin
+  //KeyPreview := True;
+  if fncServidorOk then
+  begin
+    lblInfoCaixa.Caption  := frmDados.PdvLanc.IdCaixa;
+    lblInfoOp.Caption     := frmDados.PdvLanc.OpNome;
+    lblPDVId.Caption      := frmDados.PdvLanc.IdPDV;
+    pnlProp.Caption       := gsProprietario;
+    lblInfoHora.Caption   := TimeToStr(Now);
+    lblInfoData.Caption   := FormatDateTime('ddd, d mmm yyyy',Date).ToUpper;
+  end
+  else
+  begin
+    fncCriarMensagem('CONEXÃO AO BANCO DE DADOS',
+                     'ERRO AO CONECTAR AO BANCO DE DADOS!',
+                     'não foi possível conectar ao Banco de Dados, possível causa: ' +
+                     frmDados.Conexao.MsgErro,
+                     ExtractFilePath(Application.ExeName) + '\assets\erro.png',
+                     'OK');
+    Application.Terminate;
+  end;
+end;
+
+procedure TfrmCaixa.FormKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  if Key = VK_F1 then
+  begin
+    ShowMessage('F1 pressionado!');
+    Key := 0; // Opcional: impede que o evento continue propagando
+  end;
+end;
+
+procedure TfrmCaixa.FormShow(Sender: TObject);
+begin
+  
+  //while True do
+    prcMostraFormCaixa;
+
+end;
+
+procedure TfrmCaixa.tmrPDVHoraTimer(Sender: TObject);
+begin
+  lblInfoHora.Caption := TimeToStr(Now);
+  lblInfoData.Caption := FormatDateTime('ddd, d mmm yyyy',Date).ToUpper;
+end;
+
+procedure TfrmCaixa.prcMostraFormCaixa;
+begin
+  prcLiberaFormsFilhos;
+
+  if gbCaixaAberto then
+  begin
+    pnlInfo.Color         := CCorAberto;
+    lblInfoStatus.Caption := 'CAIXA ABERTO';
+    frmCaixaAberto := TfrmCaixaAberto.Create(Self);
+    frmCaixaAberto.BorderStyle  := bsNone;
+    frmCaixaAberto.Align        := alClient;
+    frmCaixaAberto.Parent       := pnlCaixa;
+    frmCaixaAberto.Visible      := True;
+  end
+  else
+  begin
+    pnlInfo.Color         := CCorFechado;
+    lblInfoStatus.Caption := 'CAIXA FECHADO';
+    frmCaixaFechado := TfrmCaixaFechado.Create(Self);
+    frmCaixaFechado.BorderStyle  := bsNone;
+    frmCaixaFechado.Align        := alClient;
+    frmCaixaFechado.Parent       := pnlCaixa;
+    frmCaixaFechado.Visible      := True;
+  end;
+end;
+
+procedure TfrmCaixa.prcLiberaFormsFilhos;
+begin
+  if Assigned(frmCaixaAberto) then
+  begin
+    frmCaixaAberto.Free;
+    frmCaixaAberto := nil;
+  end;
+  if Assigned(frmCaixaFechado) then
+  begin
+    frmCaixaFechado.Free;
+    frmCaixaFechado := nil;
+  end;
+end;
+
+end.

@@ -4,7 +4,7 @@ interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, unit_globals,
   view.abrir_caixa;
 
 type
@@ -16,6 +16,7 @@ type
     lblDicaF1: TLabel;
     procedure FormShow(Sender: TObject);
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure FormCreate(Sender: TObject);
   private
     { Private declarations }
   public
@@ -26,16 +27,35 @@ var
   frmCaixaFechado: TfrmCaixaFechado;
 
 implementation
+uses
+  view.caixa;
 
 {$R *.dfm}
 
+procedure TfrmCaixaFechado.FormCreate(Sender: TObject);
+begin
+  KeyPreview := True;
+end;
+
 procedure TfrmCaixaFechado.FormKeyDown(Sender: TObject; var Key: Word;
   Shift: TShiftState);
+var
+  formCaixa: TfrmCaixa;
 begin
   if Key = VK_F1 then
   begin
-    Application.CreateForm(TfrmAbrirCaixa, frmAbrirCaixa);
-    frmAbrirCaixa.ShowModal;
+    Key := 0;
+    //Application.CreateForm(TfrmAbrirCaixa, frmAbrirCaixa);
+    frmAbrirCaixa := TfrmAbrirCaixa.Create(nil);
+    try
+      frmAbrirCaixa.ShowModal;
+    finally
+      frmAbrirCaixa.Free;
+      formCaixa := TfrmCaixa(Owner);
+      formCaixa.prcMostraFormCaixa;
+    end;
+
+
   end;
 end;
 

@@ -1,0 +1,199 @@
+unit classe.pdvlanc;
+
+interface
+uses
+  FireDAC.Comp.Client,
+  FireDAC.DApt,
+  System.SysUtils,
+  Vcl.Forms;
+
+Type
+  TPdvLanc = class
+    private
+      FConexao    : TFDConnection;
+      FMsgErro    : string;
+      FidPDV      : string;
+      FidCaixa    : string;
+      FidUsuario  : Integer;
+      FAberto_em  : TDateTime;
+      FUsuario    : string;
+      FOpNome     : string;
+
+    public
+      property Conexao    : TFDConnection read FConexao write FConexao;
+      property MsgErro    : string Read FMsgErro Write FMsgErro;
+      property IdPDV      : string read FidPDV write FidPDV;
+      property IdCaixa    : string read FidCaixa write FidCaixa;
+      property IdUsuario  : Integer read FidUsuario write FidUsuario;
+      property aberto_em  : TDateTime read FAberto_em write FAberto_em;
+      property Usuario    : string read FUsuario write FUsuario;
+      property OpNome     : string read FOpNome write FOpNome;
+
+      constructor Create(vConexao : TFDConnection);
+      destructor Destroy; override;
+
+      function fncCaixaAberto(sIdPdv: string): Boolean;
+      function fncCaixaDisponivel(sIdCaixa : string): Boolean;
+      function fncLancaAbertura: Boolean;
+      procedure prcFechar;
+      procedure prcAbrir;
+      procedure prcSQLInit;
+  end;
+
+var
+  QryConsulta : TFDQuery;
+
+implementation
+uses
+  unit_funcoes,
+  unit_globals;
+
+{ TPdvLanc }
+
+constructor TPdvLanc.Create(vConexao: TFDConnection);
+begin
+  FConexao := vConexao;
+  QryConsulta := TFDQuery.Create(nil);
+  QryConsulta.Connection := FConexao;
+end;
+
+destructor TPdvLanc.Destroy;
+begin
+  QryConsulta.Destroy;
+  inherited;
+end;
+
+function TPdvLanc.fncCaixaDisponivel(sIdCaixa : string): Boolean;
+var
+  lRes : Boolean;
+begin
+  try
+    lRes := False;
+    prcFechar;
+    prcAbrir;
+    prcSQLInit;
+
+    QryConsulta.SQL.Add('SELECT idcaixa');
+    QryConsulta.SQL.Add('FROM pdv.pdvlanc ');
+    QryConsulta.sql.Add('WHERE idcaixa = :pIdCaixa and fechado <> "*"');
+
+    QryConsulta.ParamByName('pIdCaixa').AsString := sIdCaixa;
+    QryConsulta.Open();
+
+    if QryConsulta.RecordCount = 0 then
+      lRes := True;
+  finally
+    Result := lRes;
+  end;
+end;
+
+function TPdvLanc.fncCaixaAberto(sIdPdv: string): Boolean;
+var
+  lRes : Boolean;
+
+begin
+  try
+    lRes := False;
+    prcFechar;
+    prcAbrir;
+    prcSQLInit;
+
+    QryConsulta.SQL.Add('SELECT idcaixa, pl.idusuario, nome, usuario');
+    QryConsulta.SQL.Add('FROM pdv.pdvlanc pl ');
+    QryConsulta.SQL.Add('INNER JOIN pdv.usuario us ');
+    QryConsulta.SQL.Add('ON pl.idusuario = us.idusuario ');
+    QryConsulta.sql.Add('WHERE idpdv = :pIdPDV and fechado <> "*"');
+
+    QryConsulta.ParamByName('pIdPDV').AsString := sIdPdv;
+    QryConsulta.Open();
+
+    if QryConsulta.RecordCount > 0 then
+    begin
+      FidCaixa    := QryConsulta.FieldByName('idcaixa').AsString;
+      FidUsuario  := QryConsulta.FieldByName('idusuario').AsInteger;
+      FUsuario    := QryConsulta.FieldByName('usuario').AsString;
+      FOpNome     := QryConsulta.FieldByName('nome').AsString;
+      lRes := True;
+    end
+    else
+    begin
+        FidCaixa := '';
+        lRes := False;
+    end;
+  finally
+    Result := lRes;
+  end;
+end;
+
+function TPdvLanc.fncLancaAbertura: Boolean;
+var
+  lbRes           : Boolean;
+  ldAberto_em     : TDateTime;
+begin
+  ldAberto_em     := Now();
+  try
+    prcFechar;
+    prcAbrir;
+
+    FConexao.StartTransaction;
+    FConexao.TxOptions.AutoCommit := False;
+    try
+      prcSQLInit;
+      QryConsulta.SQL.Add('INSERT INTO pdvlanc ');
+      QryConsulta.SQL.Add('(idpdv, idcaixa, idusuario, aberto_em, fechado, fechado_em) ');
+      QryConsulta.SQL.Add('VALUES (:pIdpdv, :pIdcaixa, :pIdusuario, :pAberto_em, ');
+      QryConsulta.SQL.Add(':pFechado, :pFechado_em)');
+      QryConsulta.ParamByName('pIdpdv').AsString       := FidPDV;
+      QryConsulta.ParamByName('pIdcaixa').AsString     := FidCaixa;
+      QryConsulta.ParamByName('pIdusuario').AsInteger  := FidUsuario;
+      QryConsulta.ParamByName('pAberto_em').AsDateTime := ldAberto_em;
+      QryConsulta.ParamByName('pFechado').AsString     := '';
+      QryConsulta.ParamByName('pFechado_em').AsDateTime:= EncodeDate(1900, 1, 1);
+      QryConsulta.ExecSQL;
+      FConexao.Commit;
+
+      FAberto_em  := ldAberto_em;
+      lbRes       := True;
+    except
+      FConexao.Rollback;
+      lbRes := False;
+      raise;
+    end;
+  finally
+    FConexao.TxOptions.AutoCommit := True;
+    Result := lbRes;
+  end;
+
+end;
+
+procedure TPdvLanc.prcAbrir;
+var
+  lOk: Boolean;
+begin
+  try
+    try
+      FConexao.Connected := True;
+      lOk := True;
+    except on E: Exception do
+    begin
+      FMsgErro := E.Message;
+      lOk := False;
+    end;
+    end;
+  finally
+    gbServidorOk := lOk;
+  end;
+end;
+
+procedure TPdvLanc.prcFechar;
+begin
+  FConexao.Connected := False;
+end;
+
+procedure TPdvLanc.prcSQLInit;
+begin
+  QryConsulta.Close;
+  QryConsulta.SQL.Clear;
+end;
+
+end.

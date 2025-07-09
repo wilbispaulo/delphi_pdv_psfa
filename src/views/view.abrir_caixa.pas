@@ -27,6 +27,7 @@ type
     procedure btnAbrirCaixaClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure edtCaixaExit(Sender: TObject);
   private
     { Private declarations }
   public
@@ -47,22 +48,22 @@ var
 begin
   prcValidarCamposObrigatorios(frmAbrirCaixa);
 
-  frmDados.PdvLanc.IdPDV := gsPDV;
-
-  if not frmDados.PdvLanc.fncCaixaAberto then
+  if not frmDados.PdvLanc.fncCaixaAberto(gsPDV) then
   begin
-    frmDados.PdvLanc.IdCaixa := edtCaixa.Text;
-    if frmDados.PdvLanc.fncCaixaDisponivel then
+    if frmDados.PdvLanc.fncCaixaDisponivel(edtCaixa.Text) then
     begin
       gsCaixa := edtCaixa.Text;
-      frmDados.PdvLanc.IdCaixa := gsCaixa;
+      frmDados.PdvLanc.IdPDV      := gsPDV;
+      frmDados.PdvLanc.IdCaixa    := edtCaixa.Text;
+      frmDados.PdvLanc.IdUsuario  := giIdUsuario;
+      if not frmDados.PdvLanc.fncLancaAbertura then
+      begin
+        // ERRO AO INCLUIR LANÇAMENTO EM PDVLANC
+      end;
 
       // ABRIR O CAIXA
-
-
-
-
-
+      gbCaixaAberto := True;
+      Close;
     end
     else
     begin
@@ -92,6 +93,19 @@ begin
 
 end;
 
+procedure TfrmAbrirCaixa.edtCaixaExit(Sender: TObject);
+begin
+  if edtCaixa.Text = '' then
+  begin
+    fncCriarMensagem('ATENÇÃO!',
+                    'DADOS OBRIGATÓRIOS',
+                    'O campo CAIXA é obrigatório',
+                    ExtractFilePath(Application.ExeName) + '\assets\atencao.png',
+                    'OK');
+      edtCaixa.SetFocus;
+  end;
+end;
+
 procedure TfrmAbrirCaixa.edtEntradaDnhKeyPress(Sender: TObject; var Key: Char);
 var
   LValor: Double;
@@ -99,7 +113,7 @@ begin
   if edtEntradaDnh.Text = '' then
       edtEntradaDnh.Text := '0,00';
 
-  if (Key in ['0'..'9']) and (Length(edtEntradaDnh.Text) < 9) then
+  if (CharInSet(Key,['0'..'9'])) and (Length(edtEntradaDnh.Text) < 9) then
   begin
     LValor := StrToFloat(Key) / 100;
     LValor := LValor + StrToFloat(StringReplace(edtEntradaDnh.Text, '.', '', [rfReplaceAll])) * 10;
@@ -142,6 +156,7 @@ begin
       Key := #0;
     end;
   end;
+
 procedure TfrmAbrirCaixa.pnlBotAbrirEnter(Sender: TObject);
 begin
   pnlBotAbrir.Color := clHighlight;

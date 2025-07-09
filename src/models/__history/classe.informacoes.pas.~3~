@@ -1,0 +1,23 @@
+unit class.informacoes;
+
+interface
+uses
+  FireDAC.Comp.Client,
+  FireDAC.DApt,
+  System.SysUtils,
+  unit_funcoes,
+  unit_globals,
+  Vcl.Forms;
+
+type
+  TInformacoes = class
+  private
+    FConexao: TFDConnection;
+  public
+    property Conexao      : TFDConnection read FConexao write FConexao;
+    property MsgErro      : string read FMsgErro write FMsgErro;
+  end;
+
+implementation
+
+end.

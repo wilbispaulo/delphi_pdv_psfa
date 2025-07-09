@@ -1,0 +1,548 @@
+unit view.caixa_aberto;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.RegularExpressions,System.SysUtils,
+  System.Variants, System.Classes, Vcl.Graphics, System.Generics.Collections,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Data.DB, Vcl.Grids, Vcl.DBGrids,
+  Vcl.StdCtrls, Vcl.Mask, Vcl.ExtCtrls, Vcl.DBCtrls, Vcl.Imaging.pngimage,
+  WWPMaskEdit, classe.pdvlanc, classe.ticket, classe.produtos, classe.informacoes,unitDados, unit_globals,
+  unit_funcoes, FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param,
+  FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf,
+  FireDAC.Stan.Async, FireDAC.DApt, FireDAC.Comp.DataSet, FireDAC.Comp.Client,
+  classe.ticketitens, Vcl.AppEvnts, view.mensagens, entity.ticketitens,
+  entity.produtos;
+
+type
+  TfrmCaixaAberto = class(TForm)
+    pnlFundoCaixaAberto: TPanel;
+    lblProduto: TLabel;
+    lblCod: TLabel;
+    lblQtd: TLabel;
+    lblTxtX: TLabel;
+    lblTxtIgual: TLabel;
+    lblVlUn: TLabel;
+    lblVlTotIt: TLabel;
+    pnlTicket: TPanel;
+    pnlTicketTop: TPanel;
+    pnlTicketBottom: TPanel;
+    lstTicketCorpo: TListBox;
+    pnlCpoProduto: TPanel;
+    shpCpoProduto: TShape;
+    pnlCpoCod: TPanel;
+    shpCpoCod: TShape;
+    edtCpoCod: TWWPMaskEdit;
+    pnlCpoQtd: TPanel;
+    shpCpoQtd: TShape;
+    edtCpoQtd: TWWPMaskEdit;
+    pnlCpoVlUn: TPanel;
+    shpCpoVlUn: TShape;
+    pnlCpoVlTotIt: TPanel;
+    shpCpoVlTotIt: TShape;
+    lblSubTotal: TLabel;
+    edtSubtotal: TEdit;
+    edtTicketTopL2: TEdit;
+    edtTicketTopL1: TEdit;
+    lblCpoVlUn: TLabel;
+    lblCpoVlTotIt: TLabel;
+    lblCpoProduto: TLabel;
+    pnlFormVenda: TPanel;
+    aplEventCaixaAberto: TApplicationEvents;
+    procedure FormCreate(Sender: TObject);
+    procedure lstTicketCorpoDrawItem(Control: TWinControl; Index: Integer;
+      Rect: TRect; State: TOwnerDrawState);
+    procedure prcIniciaTicketTela;
+    procedure prcCarregaItensTicketTela(lstTabelaItens: TList<TTicketItensEntity>);
+    procedure prcCarregaTicketTela;
+    procedure prcAjustaMedidas;
+    procedure prcCalcTotalItem;
+    procedure prcAbreTicket;
+    procedure prcGravaItem;
+    procedure prcLimpaCampos;
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure FormShow(Sender: TObject);
+    procedure edtCpoCodKeyPress(Sender: TObject; var Key: Char);
+    procedure edtCpoQtdKeyPress(Sender: TObject; var Key: Char);
+    procedure aplEventCaixaAbertoIdle(Sender: TObject; var Done: Boolean);
+    function fncPegaProduto(sCodProd: string): Boolean;
+
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmCaixaAberto: TfrmCaixaAberto;
+  lstTicketItens: TList<TTicketItensEntity>;
+  lstProduto: TList<TProdutosEntity>;
+  qryResult: TFDQuery;
+  msgMensagemLocal: TfrmMensagem;
+  lbPronto: Boolean;
+
+implementation
+
+uses
+  view.caixa;
+
+{$R *.dfm}
+
+procedure TfrmCaixaAberto.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  frmDados.Ticket.Destroy;
+  frmDados.TicketItens.Destroy;
+  frmDados.Produtos.Destroy;
+  frmDados.Informacoes.Destroy;
+  lstTicketItens.Destroy;
+  Action := TCloseAction.caFree;
+end;
+
+procedure TfrmCaixaAberto.FormCreate(Sender: TObject);
+begin
+  lbPronto := False;
+
+  // Inicializa TICKET
+  frmDados.Ticket := TTicket.Create(frmDados.FDConnection);
+
+  // Inicializa TICKET ITENS
+  frmDados.TicketItens := TTicketItens.Create(frmDados.FDConnection);
+
+  // Inicializa PRODUTOS
+  frmDados.Produtos := TProdutos.Create(frmDados.FDConnection);
+
+  // Inicializa Informacoes
+  frmDados.Informacoes := TInformacoes.Create(frmDados.FDConnection);
+
+  lstTicketItens  := TList<TTicketItensEntity>.Create;
+  lstProduto      := TList<TProdutosEntity>.Create;
+
+  frmDados.Ticket.opnome := gsNomeUsuario;
+  if gbCaixaAberto then
+  begin
+    frmCaixa.lblInfoCaixa.Caption := gsCaixa;
+  end;
+
+  prcAjustaMedidas;
+  prcIniciaTicketTela;
+
+  // Verifica se tem ticket aberto no BD
+  if frmDados.Ticket.fncTicketAberto(gsPDV, gsCaixa) then
+  begin
+    // Monta cabeçalho do TICKET na tela
+    prcCarregaTicketTela;
+
+    // Verifica itens abertos no ticket
+    lstTicketItens := frmDados.TicketItens.fncPegaItensDoTicket(frmDados.Ticket.numticket);
+
+    if lstTicketItens.Count > 0 then
+    begin
+      prcCarregaItensTicketTela(lstTicketItens);
+    end;
+  end;
+end;
+
+procedure TfrmCaixaAberto.FormShow(Sender: TObject);
+begin
+  edtCpoCod.SetFocus;
+end;
+
+procedure TfrmCaixaAberto.aplEventCaixaAbertoIdle(Sender: TObject;
+  var Done: Boolean);
+begin
+  HideCaret(edtCpoCod.Handle);
+  HideCaret(edtCpoQtd.Handle);
+end;
+
+procedure TfrmCaixaAberto.edtCpoCodKeyPress(Sender: TObject; var Key: Char);
+begin
+  if Key = #13 then
+  begin
+    Key := #0;
+    if fncPegaProduto(edtCpoCod.Text) then
+      edtCpoQtd.SetFocus
+    else
+    begin
+      edtCpoCod.Text := '';
+      edtCpoCod.SetFocus;
+    end;
+
+  end;
+
+end;
+
+procedure TfrmCaixaAberto.edtCpoQtdKeyPress(Sender: TObject; var Key: Char);
+var
+  lcTotTicket: Currency;
+begin
+  HideCaret(edtCpoQtd.Handle);
+  if Key = #8 then
+  begin
+    if lbPronto then
+    begin
+      shpCpoVlTotIt.Brush.Color := clWindow;
+      edtCpoQtd.Color := clWebBlanchedAlmond;
+      Key := #0;
+      lbPronto := False;
+    end
+    else
+    begin
+      if edtCpoQtd.Text = '' then
+      begin
+        Key := #0;
+        edtCpoCod.Text := '';
+        edtCpoCod.SetFocus;
+      end;
+    end;
+  end;
+  if Key = #13 then
+  begin
+    Key := #0;
+    if not lbPronto then
+    begin
+      // Calcula o valor do item
+      prcCalcTotalItem;
+      shpCpoVlTotIt.Brush.Color := cCorCampoTotal;
+      edtCpoQtd.Color := clWindow;
+      lbPronto := True;
+    end
+    else
+    begin
+      if not gbTicketAberto then
+      begin
+        // Abre um novo Ticket no banco de dados
+        prcAbreTicket;
+
+        // Monta cabeçalho do TICKET na tela
+        prcCarregaTicketTela;
+      end;
+      // GRAVA O ITEM NO TICKET
+      prcGravaItem;
+
+      // Calcula e atualiza os descontos do grupo
+      frmDados.TicketItens.fncAtualizaDesc;
+
+      // Atualiza o ListBox da tela com os itens do ticket
+      // Verifica itens do ticket
+      lstTicketItens := frmDados.TicketItens.fncPegaItensDoTicket(frmDados.Ticket.numticket);
+
+      if lstTicketItens.Count > 0 then
+      begin
+        prcCarregaItensTicketTela(lstTicketItens);
+      end;
+
+      // Calcula o total do ticket e atualiza o rodapé do ListBox
+      lcTotTicket := frmDados.TicketItens.fncTotalizaTicket;
+
+      // LIMPA OS CAMPOS PARA DIGITAÇÃO
+      prcLimpaCampos;
+    end;
+
+
+  end;
+  if (not TRegEx.IsMatch(Key, '[0-9\b]')) or (lbPronto) then
+    Key := #0;
+
+
+end;
+
+procedure TfrmCaixaAberto.lstTicketCorpoDrawItem(Control: TWinControl;
+  Index: Integer; Rect: TRect; State: TOwnerDrawState);
+begin
+  if not Odd(Index) then
+  begin
+    lstTicketCorpo.Canvas.Brush.Color := cCorZebra1;
+  end
+  else
+  begin
+    lstTicketCorpo.Canvas.Brush.Color := cCorZebra2;
+    lstTicketCorpo.Canvas.Font.Name := 'IBM Plex Mono SemiBold';
+    lstTicketCorpo.Canvas.Font.Size := Round(lstTicketCorpo.Font.Size * 1.1);
+  end;
+  lstTicketCorpo.Canvas.FillRect(Rect);
+  lstTicketCorpo.Canvas.TextOut(0, Rect.Top + 2, lstTicketCorpo.Items[Index]);
+end;
+
+procedure TfrmCaixaAberto.prcAbreTicket;
+begin
+  if not frmDados.Ticket.fncAbreProximoTicket(
+  gsPDV,
+  gsCaixa,
+  gsNomeUsuario,
+  frmDados.Informacoes.fncPegaInfo('INSTD', 1),
+  frmDados.Informacoes.fncPegaInfo('INSTD', 2),
+  frmDados.Informacoes.fncPegaInfo('INSTD', 3),
+  frmDados.Informacoes.fncPegaInfo('INSTD', 4)) then
+  begin
+    // MENSAGEM DE ERRO DO BANCO DE DADOS;
+  end;
+
+  gbTicketAberto := True;
+
+end;
+
+procedure TfrmCaixaAberto.prcAjustaMedidas;
+begin
+  // PAINEL FORM VENDA
+  pnlFormVenda.Width        := Round(gcFatorH * 790);
+  pnlFormVenda.Font.Height  := Round(gcFatorH * -26);
+
+  lblTxtX.Left              := Round(gcFatorH * 344);
+  lblTxtX.Top               := Round(gcFatorH * 153);
+
+  lblTxtIgual.Left          := Round(gcFatorH * 543);
+  lblTxtIgual.Top           := lblTxtX.Top;
+
+  pnlCpoProduto.Left        := Round(gcFatorH * 30);
+  pnlCpoProduto.Top         := Round(gcFatorV * 60);
+  pnlCpoProduto.Width       := Round(gcFatorH * 740);
+  pnlCpoProduto.Height      := Round(gcFatorV * 50);
+  lblProduto.Height         := Round(gcFatorV * 27);
+  lblProduto.Width          := Round(gcFatorH * 100);
+  lblProduto.Left           := pnlCpoProduto.Left;
+  lblProduto.Top            := pnlCpoProduto.Top - lblProduto.Height;
+  lblProduto.Font.Height    := Round(gcFatorH * -19);
+  lblCpoProduto.Margins.Left:= Round(gcFatorH * 10);
+
+  pnlCpoCod.Left            := pnlCpoProduto.Left;
+  pnlCpoCod.Top             := Round(gcFatorV * 150);
+  pnlCpoCod.Width           := Round(gcFatorH * 130);
+  pnlCpoCod.Height          := pnlCpoProduto.Height;
+  lblCod.Height             := lblProduto.Height;
+  lblCod.Width              := Round(gcFatorH * 100);
+  lblCod.Left               := pnlCpoCod.Left;
+  lblCod.Top                := pnlCpoCod.Top - lblCod.Height;
+  lblCod.Font.Height        := lblProduto.Font.Height;
+
+  pnlCpoQtd.Left            := Round(gcFatorH * 220);
+  pnlCpoQtd.Top             := pnlCpoCod.Top;
+  pnlCpoQtd.Width           := Round(gcFatorH * 100);
+  pnlCpoQtd.Height          := pnlCpoProduto.Height;
+  lblQtd.Height             := lblProduto.Height;
+  lblQtd.Width              := Round(gcFatorH * 70);
+  lblQtd.Left               := pnlCpoQtd.Left;
+  lblQtd.Top                := pnlCpoQtd.Top - lblQtd.Height;
+  lblQtd.Font.Height        := lblProduto.Font.Height;
+
+  pnlCpoVlUn.Left           := Round(gcFatorH * 385);
+  pnlCpoVlUn.Top            := pnlCpoCod.Top;
+  pnlCpoVlUn.Width          := Round(gcFatorH * 130);
+  pnlCpoVlUn.Height         := pnlCpoProduto.Height;
+  lblVlUn.Height            := lblProduto.Height;
+  lblVlUn.Width             := Round(gcFatorH * 115);
+  lblVlUn.Left              := pnlCpoVlUn.Left;
+  lblVlUn.Top               := pnlCpoVlUn.Top - lblVlUn.Height;
+  lblVlUn.Font.Height       := lblProduto.Font.Height;
+  lblCpoVlUn.Margins.Right  := lblCpoProduto.Margins.Left;
+
+  pnlCpoVlTotIt.Left          := Round(gcFatorH * 590);
+  pnlCpoVlTotIt.Top           := pnlCpoCod.Top;
+  pnlCpoVlTotIt.Width         := Round(gcFatorH * 180);
+  pnlCpoVlTotIt.Height        := pnlCpoProduto.Height;
+  lblVlTotIt.Height           := lblProduto.Height;
+  lblVlTotIt.Width            := lblVlUn.Width;
+  lblVlTotIt.Left             := pnlCpoVlTotIt.Left;
+  lblVlTotIt.Top              := pnlCpoVlTotIt.Top - lblVlTotIt.Height;
+  lblVlTotIt.Font.Height      := lblProduto.Font.Height;
+  lblCpoVlTotIt.Margins.Right := lblCpoProduto.Margins.Left;
+
+
+
+  //  PAINEL TICKET
+  pnlTicketTop.Height       := Round(gcFatorV * 60);
+
+  pnlTicketBottom.Height    := Round(gcFatorV * 50);
+
+  lstTicketCorpo.ItemHeight := Round(gcFatorV * 25);
+
+  pnlTicket.Width           := Round(gcFatorH * 450);
+  pnlTicket.Left            := Screen.Width - pnlTicket.Width - 35;
+  pnlTicket.Height          := pnlTicketTop.Height + pnlTicketBottom.Height + lstTicketCorpo.ItemHeight * 18;
+
+  pnlTicketTop.Font.Size    := Round(gcFatorV * 11);
+
+  edtTicketTopL1.Width      := pnlTicket.Width;
+  edtTicketTopL1.Top        := Round(gcFatorV * 3);
+
+  edtTicketTopL2.Width      := pnlTicket.Width;
+  edtTicketTopL2.Top        := Round(gcFatorV * 30);
+
+  lblSubTotal.Font.Size     := Round(gcFatorV * 18);
+  lblSubTotal.Width         := Round(gcFatorV * 106);
+  lblSubTotal.Height        := Round(gcFatorV * 32);
+
+  edtSubtotal.Font.Size     := Round(gcFatorV * 18);
+  edtSubtotal.Width         := Round(gcFatorV * 200);
+  edtSubtotal.Height        := Round(gcFatorV * 32);
+  edtSubtotal.Left          := Round(gcFatorV * 240);
+
+  lstTicketCorpo.Font.Size  := Round(gcFatorV * 11);
+end;
+
+procedure TfrmCaixaAberto.prcCalcTotalItem;
+var
+  cTotalItem: Currency;
+begin
+  cTotalItem := StrToInt(edtCpoQtd.Text) * frmDados.TicketItens.vlun;
+  lblCpoVlTotIt.Caption := FormatCurr('#,##0.00', cTotalItem);
+end;
+
+procedure TfrmCaixaAberto.prcCarregaItensTicketTela(lstTabelaItens: TList<TTicketItensEntity>);
+var
+  lTTicketItem : TTicketItensEntity;
+  iSeq : Integer;
+  iIndex : Integer;
+  sTextoL1, sTextoL2, sTextoL3, sTextoL4, sTemp : string;
+  cValItTot : Currency;
+begin
+  lTTicketItem := TTicketItensEntity.Create;
+  sTextoL1 := '';
+  sTextoL2 := '';
+  sTextoL3 := '';
+  sTextoL4 := '';
+  lstTabelaItens.First;
+  iSeq := 1;
+  iIndex := 0;
+  for  lTTicketItem in lstTabelaItens do
+  begin
+    sTextoL1 := ' ' + Format('%.3d', [iSeq]) + ' ';
+    sTextoL1 := sTextoL1 + lTTicketItem.codgrupo + lTTicketItem.codprod + ' ';
+    sTextoL1 := sTextoL1 + lTTicketItem.descr;
+    iIndex := iIndex + 1;
+    cValItTot := lTTicketItem.qtd * lTTicketItem.vlun;
+    if lTTicketItem.descun > 0 then
+    begin
+      sTextoL2 := ' ***' + lTTicketItem.descresp + ' ';
+      iIndex := iIndex + 1;
+    end;
+    sTemp := IntToStr(lTTicketItem.qtd);
+    sTemp := sTemp + ' ' + lTTicketItem.und + ' x ';
+    sTemp := sTemp + FormatCurr('#,##0.00', lTTicketItem.vlun);
+    sTemp := sTemp + fncTextoEspacoIni(FormatFloat('#,##0.00', cValItTot), 8);
+    sTextoL3 := fncTextoEspacoIni(sTemp, 48);
+    iIndex := iIndex + 1;
+    if lTTicketItem.descun > 0 then
+    begin
+      sTemp := 'DESCONTO SOBRE ITEM=> ';
+      sTemp := sTemp + FormatCurr('#,##0.00', lTTicketItem.descun) + ' ';
+      sTextoL4 :=  fncTextoEspacoIni(sTemp, 48);
+      iIndex := iIndex + 1;
+    end;
+
+
+    lstTicketCorpo.Items.Add(sTextoL1);
+    if sTextoL2 <> '' then
+      lstTicketCorpo.Items.Add(sTextoL2);
+    lstTicketCorpo.Items.Add(sTextoL3);
+    if sTextoL4 <> '' then
+      lstTicketCorpo.Items.Add(sTextoL4);
+
+    lstTicketCorpo.TopIndex := iIndex;
+
+    iSeq := iSeq + 1;
+  end;
+  lTTicketItem.Free;
+
+end;
+
+procedure TfrmCaixaAberto.prcCarregaTicketTela;
+var
+  sTextoL1, sTextoL2, sTemp : string;
+begin
+  frmCaixa.lblInfoTicket.Caption := frmDados.Ticket.numticket;
+
+  sTextoL1 := 'Ticket: ' + frmDados.Ticket.numticket + '    ';
+  sTextoL1 := sTextoL1 + 'Caixa: ' + frmDados.Ticket.caixa + '    ';
+  sTextoL1 := sTextoL1 + FormatDateTime('dd/mm/yyyy hh:mm:ss', frmDados.Ticket.aberto_em);
+  sTextoL2 := 'Op.: ' + fncTextoEspacoFim(frmDados.Ticket.opnome, 36);
+  sTextoL2 := sTextoL2 + 'PDV: ' + frmDados.Ticket.pdv;
+
+  edtTicketTopL1.Text := sTextoL1;
+  edtTicketTopL2.Text := sTextoL2;
+end;
+
+procedure TfrmCaixaAberto.prcGravaItem;
+begin
+  // GRAVA ITEM NO TICKET
+  // (O objeto TicketItem foi carregado na função PegaProduto)
+  if not frmDados.TicketItens.fncGravaItem then
+  begin
+
+  end;
+end;
+
+procedure TfrmCaixaAberto.prcIniciaTicketTela;
+var
+  i : Integer;
+
+begin
+  lstTicketCorpo.Items.Clear;
+  for i := 1 to 18 do
+    lstTicketCorpo.Items.Add(Espaco(1));
+
+end;
+
+procedure TfrmCaixaAberto.prcLimpaCampos;
+begin
+  // LIMPA OS CAMPOS PARA DIGITAÇÃO DE UM PRODUTO
+  lblCpoProduto.Caption       := '';
+  edtCpoCod.Text              := '';
+  edtCpoQtd.Text              := '';
+  lblCpoVlUn.Caption          := '';
+  lblCpoVlTotIt.Caption       := '';
+  shpCpoVlTotIt.Brush.Color   := clWindow;
+  lbPronto := False;
+  edtCpoCod.SetFocus;
+end;
+
+function TfrmCaixaAberto.fncPegaProduto(sCodProd: string): Boolean;
+var
+  lProduto: TProdutosEntity;
+begin
+  lstProduto  := frmDados.Produtos.fncProcuraProduto(sCodProd);
+
+  if lstProduto.Count > 0 then
+  begin
+    lProduto := TProdutosEntity.Create;
+    lProduto := lstProduto.First;
+    if lProduto.Inativo = '*' then
+    begin
+      lblCpoProduto.Caption := '*** PRODUTO NÃO DISPONÍVEL ***';
+    end
+    else
+    begin
+      lblCpoProduto.Caption := lProduto.Descr;
+      lblCpoVlUn.Caption := FormatCurr('#,##0.00', lProduto.ValUnit);
+      lblCpoVlTotIt.Caption := '';
+
+      //Carrega os dados em TicketItens
+      frmDados.TicketItens.numticket    := frmDados.Ticket.numticket;
+      frmDados.TicketItens.codgrupo     := lProduto.CodGrupo;
+      frmDados.TicketItens.codprod      := lProduto.CodProd;
+      frmDados.TicketItens.descr        := lProduto.Descr;
+      frmDados.TicketItens.qtd          := StrToInt(edtCpoQtd.Text);
+      frmDados.TicketItens.und          := lProduto.Und;
+      frmDados.TicketItens.vlun         := lProduto.ValUnit;
+      frmDados.TicketItens.descun       := 0;
+      frmDados.TicketItens.descgrp      := 0;
+      frmDados.TicketItens.especial     := '';
+      frmDados.TicketItens.descresp     := '';
+      frmDados.TicketItens.pedido_em    := EncodeDate(1900, 1, 1);
+      frmDados.TicketItens.entregue     := '';
+      frmDados.TicketItens.entregue_em  := EncodeDate(1900, 1, 1);
+      frmDados.TicketItens.cancelado    := '';
+      frmDados.TicketItens.cancelado_em := EncodeDate(1900, 1, 1);
+
+      lProduto.Free;
+    end;
+
+    Result := True;
+  end
+  else 
+  begin
+      lblCpoProduto.Caption := '*** PRODUTO NÃO ENCONTRADO ***';
+      Result := False;
+  end;
+end;
+
+end.

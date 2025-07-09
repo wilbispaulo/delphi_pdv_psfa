@@ -1,0 +1,64 @@
+unit entity.produtos;
+
+interface
+uses
+  System.SysUtils, System.Classes;
+
+type
+  TProdutosEntity = class
+  private
+    FCodGrupo     : string;
+    FCodProd      : string;
+    FCodDigi      : string;
+    FDescr        : string;
+    FDescrCurta   : string;
+    FUnd          : string;
+    FValUnit      : Currency;
+    FInativo      : string;
+    FImprAtend1   : string;
+    FImprAtend2   : string;
+    FQtd1         : Integer;
+    FValUnit1     : Currency;
+    FAtiva1       : string;
+    FQtd2         : Integer;
+    FValUnit2     : Currency;
+    FAtiva2       : string;
+    FQtd3         : Integer;
+    FValUnit3     : Currency;
+    FAtiva3       : string;
+    FDescGrupo    : string;
+    FCancelado    : string;
+    FCriado_em    : TDateTime;
+    FAlterado_em  : TDateTime;
+
+  public
+    property CodGrupo     : string read FCodGrupo write FCodGrupo;
+    property CodProd      : string read FCodProd write FCodProd;
+    property CodDigi      : string read FCodDigi write FCodDigi;
+    property Descr        : string read FDescr write FDescr;
+    property DescrCurta   : string read FDescrCurta write FDescrCurta;
+    property Und          : string read FUnd write FUnd;
+    property ValUnit      : Currency read FValUnit write FValUnit;
+    property Inativo      : string read FInativo write FInativo;
+    property ImprAtend1   : string read FImprAtend1 write FImprAtend1;
+    property ImprAtend2   : string read FImprAtend2 write FImprAtend2;
+    property Qtd1         : Integer read FQtd1 write FQtd1;
+    property ValUnit1     : Currency read FValUnit1 write FValUnit1;
+    property Ativa1       : string read FAtiva1 write FAtiva1;
+    property Qtd2         : Integer read FQtd2 write FQtd2;
+    property ValUnit2     : Currency read FValUnit2 write FValUnit2;
+    property Ativa2       : string read FAtiva2 write FAtiva2;
+    property Qtd3         : Integer read FQtd3 write FQtd3;
+    property ValUnit3     : Currency read FValUnit3 write FValUnit3;
+    property Ativa3       : string read FAtiva3 write FAtiva3;
+    property DescGrupo    : string read FDescGrupo write FDescGrupo;
+    property Cancelado    : string read FCancelado write FCancelado;
+    property Criadoem     : TDateTime read FCriado_em write FCriado_em;
+    property Alteradoem   : TDateTime read FAlterado_em write FAlterado_em;
+  end;
+
+implementation
+
+{ TProdutos }
+
+end.

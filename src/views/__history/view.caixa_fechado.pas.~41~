@@ -1,0 +1,72 @@
+unit view.caixa_fechado;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, unit_globals,
+  view.abrir_caixa;
+
+type
+  TfrmCaixaFechado = class(TForm)
+    pnlFundoCaixaFechado: TPanel;
+    pnlCaixaFechado: TPanel;
+    shpCaixaFechado: TShape;
+    lblCaixaFechado: TLabel;
+    lblDicaF1: TLabel;
+    procedure FormShow(Sender: TObject);
+    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure FormCreate(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure FormDestroy(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmCaixaFechado: TfrmCaixaFechado;
+
+implementation
+uses
+  view.caixa;
+
+{$R *.dfm}
+
+procedure TfrmCaixaFechado.FormCreate(Sender: TObject);
+begin
+  KeyPreview := True;
+end;
+
+procedure TfrmCaixaFechado.FormKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+var
+  formCaixa: TfrmCaixa;
+begin
+  if Key = VK_F1 then
+  begin
+    Key := 0;
+    //Application.CreateForm(TfrmAbrirCaixa, frmAbrirCaixa);
+    frmAbrirCaixa := TfrmAbrirCaixa.Create(nil);
+    try
+      frmAbrirCaixa.ShowModal;
+    finally
+      frmAbrirCaixa.Free;
+      formCaixa := TfrmCaixa(Owner);
+      formCaixa.prcMostraFormCaixa;
+    end;
+
+
+  end;
+end;
+
+procedure TfrmCaixaFechado.FormShow(Sender: TObject);
+begin
+  pnlCaixaFechado.Left  := Round((Screen.Width - pnlCaixaFechado.Width) / 2);
+  pnlCaixaFechado.Top   := Round((Screen.Height - pnlCaixaFechado.Height - 70) / 2);
+  lblCaixaFechado.Width := pnlCaixaFechado.Width;
+  lblDicaF1.Width       := pnlCaixaFechado.Width;
+end;
+
+end.

@@ -486,6 +486,7 @@ object frmCaixa: TfrmCaixa
     0000C0030000E0070000F81F0000}
   WindowState = wsMaximized
   OnCreate = FormCreate
+  OnKeyDown = FormKeyDown
   OnShow = FormShow
   TextHeight = 15
   object pnlInfo: TPanel
@@ -563,9 +564,8 @@ object frmCaixa: TfrmCaixa
       object lblInfoOp: TLabel
         Left = 40
         Top = 6
-        Width = 54
+        Width = 5
         Height = 25
-        Caption = 'xxxxxx'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWhite
         Font.Height = -19
@@ -600,9 +600,8 @@ object frmCaixa: TfrmCaixa
       object lblInfoTicket: TLabel
         Left = 70
         Top = 6
-        Width = 36
+        Width = 5
         Height = 25
-        Caption = 'xxxx'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWhite
         Font.Height = -19

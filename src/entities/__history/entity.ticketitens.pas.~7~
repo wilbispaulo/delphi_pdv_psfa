@@ -1,0 +1,49 @@
+unit entity.ticketitens;
+
+interface
+
+uses
+  System.SysUtils, System.Classes;
+
+type
+  TTicketItensEntity = class
+
+  private
+    FNumticket    : string;
+    FCodGrupo     : string;
+    FCodprod      : string;
+    FDescr        : string;
+    FQtd          : Integer;
+    FUnd          : string;
+    FVlun         : Currency;
+    FDescun       : Currency;
+    FEspecial     : string;
+    FDescresp     : string;
+    FPedido_em    : TDateTime;
+    FEntregue     : string;
+    FEntregue_em  : TDateTime;
+    FCancelado    : string;
+    FCancelado_em : TDateTime;
+
+  public
+    property numticket    : string read FNumticket write FNumticket;
+    property codgrupo     : string read FCodGrupo write FCodGrupo;
+    property codprod      : string read FCodprod write FCodprod;
+    property descr        : string read FDescr write FDescr;
+    property qtd          : Currency read FQtd write FQtd;
+    property und          : string read FUnd write FUnd;
+    property vlun         : Currency read FVlun write FVlun;
+    property descun       : Currency read FDescun write FDescun;
+    property especial     : string read FEspecial write FEspecial;
+    property descresp     : string read FDescresp write FDescresp;
+    property pedido_em    : TDateTime read FPedido_em write FPedido_em;
+    property entregue     : string read FEntregue write FEntregue;
+    property entregue_em  : TDateTime read FEntregue_em write FEntregue_em;
+    property cancelado    : string read FCancelado write FCancelado;
+    property cancelado_em : TDateTime read FCancelado_em write FCancelado_em;
+
+end;
+
+implementation
+
+end.

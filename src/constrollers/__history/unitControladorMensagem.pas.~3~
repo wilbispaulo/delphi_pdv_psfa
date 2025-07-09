@@ -1,0 +1,47 @@
+unit unitControladorMensagem;
+
+interface
+
+uses
+  System.SysUtils, Vcl.Forms, view.mensagensimples;
+
+type
+  TControladorMensagem = class
+  private
+    frmMensagemForm: TfrmMensagemSimples;
+  public
+    procedure Mostrar(
+      const sTituloJanela: string;
+      const sTituloMsg: string;
+      const sMsg: string;
+      const sCaminhoImagem: string);
+    procedure Remover;
+  end;
+
+implementation
+
+{ TControladorMensagem }
+
+procedure TControladorMensagem.Mostrar(const sTituloJanela, sTituloMsg, sMsg,
+  sCaminhoImagem: string);
+begin
+  if not Assigned(frmMensagemForm) then
+  begin
+    frmMensagemForm := TfrmMensagemSimples.Create(Application);
+  end;
+  frmMensagemForm.lblTituloJanela.Caption := sTituloJanela;
+  frmMensagemForm.lblTituloMsg.Caption := sTituloMsg;
+  frmMensagemForm.lblMsg.Caption := sMsg;
+  frmMensagemForm.imgMsgIcone.Picture.LoadFromFile(sCaminhoImagem);
+  frmMensagemForm.ShowModal;
+end;
+
+procedure TControladorMensagem.Remover;
+begin
+  if Assigned(frmMensagemForm) then
+  begin
+      frmMensagemForm.Close;
+  end;
+end;
+
+end.

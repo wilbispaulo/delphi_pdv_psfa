@@ -1,0 +1,170 @@
+unit view.abrir_caixa;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
+  System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls, Vcl.Mask,
+  WWPMaskEdit, WWPEdit, Vcl.Buttons, unit_funcoes, unit_globals,
+  classe.pdvlanc, unitDados;
+
+type
+  TfrmAbrirCaixa = class(TForm)
+    pnlTopAbrirCaixa: TPanel;
+    lblTopAbrirCaixa: TLabel;
+    shpAbrirCaixa: TShape;
+    pnlBotAbrir: TPanel;
+    btnAbrirCaixa: TSpeedButton;
+    edtCaixa: TWWPEdit;
+    lblCaixa: TLabel;
+    lblEntradaDnh: TLabel;
+    edtEntradaDnh: TWWPMaskEdit;
+    procedure edtEntradaDnhKeyPress(Sender: TObject; var Key: Char);
+    procedure FormKeyPress(Sender: TObject; var Key: Char);
+    procedure pnlBotAbrirEnter(Sender: TObject);
+    procedure pnlBotAbrirExit(Sender: TObject);
+    procedure btnAbrirCaixaClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure edtCaixaExit(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmAbrirCaixa: TfrmAbrirCaixa;
+
+implementation
+
+{$R *.dfm}
+
+
+procedure TfrmAbrirCaixa.btnAbrirCaixaClick(Sender: TObject);
+var
+  liCaixa: Integer;
+begin
+  prcValidarCamposObrigatorios(frmAbrirCaixa);
+
+  if not frmDados.PdvLanc.fncCaixaAberto(gsPDV) then
+  begin
+    if frmDados.PdvLanc.fncCaixaDisponivel(edtCaixa.Text) then
+    begin
+      gsCaixa := edtCaixa.Text;
+      frmDados.PdvLanc.IdPDV      := gsPDV;
+      frmDados.PdvLanc.IdCaixa    := edtCaixa.Text;
+      frmDados.PdvLanc.IdUsuario  := giIdUsuario;
+      if not frmDados.PdvLanc.fncLancaAbertura then
+      begin
+        // ERRO AO INCLUIR LANÇAMENTO EM PDVLANC
+      end;
+
+      // ABRIR O CAIXA
+      gbCaixaAberto := True;
+      Close;
+    end
+    else
+    begin
+      fncCriarMensagem('ABERTURA DE CAIXA',
+                     'CAIXA EM USO!',
+                     'Não é possível abrir o CAIXA ' + edtCaixa.Text +
+                     '. Ele está aberto em outro PDV.',
+                     ExtractFilePath(Application.ExeName) + '\assets\erro.png',
+                     'OK');
+    edtCaixa.SetFocus;
+    Abort;
+    end;
+
+  end
+  else
+  begin
+    fncCriarMensagem('ERRO',
+                         'INICIALIZAÇÃO DO PDV!',
+                         'O CAIXA ' +
+                         frmDados.PdvLanc.IdCaixa +
+                         ' se encontra ABERTO no banco de dados. ' +
+                         'Necessário reiniciar a aplicação.',
+                         ExtractFilePath(Application.ExeName) + '\assets\erro.png',
+                         'OK');
+    Application.Terminate;
+  end;
+
+end;
+
+procedure TfrmAbrirCaixa.edtCaixaExit(Sender: TObject);
+begin
+  if edtCaixa.Text = '' then
+  begin
+    fncCriarMensagem('ATENÇÃO!',
+                    'DADOS OBRIGATÓRIOS',
+                    'O campo CAIXA é obrigatório',
+                    ExtractFilePath(Application.ExeName) + '\assets\atencao.png',
+                    'OK');
+      edtCaixa.SetFocus;
+  end;
+end;
+
+procedure TfrmAbrirCaixa.edtEntradaDnhKeyPress(Sender: TObject; var Key: Char);
+var
+  LValor: Double;
+begin
+  if edtEntradaDnh.Text = '' then
+      edtEntradaDnh.Text := '0,00';
+
+  if (Key in ['0'..'9']) and (Length(edtEntradaDnh.Text) < 9) then
+  begin
+    LValor := StrToFloat(Key) / 100;
+    LValor := LValor + StrToFloat(StringReplace(edtEntradaDnh.Text, '.', '', [rfReplaceAll])) * 10;
+    edtEntradaDnh.Text := FormatFloat('#,##0.00', LValor);
+  end;
+
+  if Key = Char(VK_BACK) then
+  begin
+      LValor := Trunc(StrToFloat(StringReplace(edtEntradaDnh.Text, '.', '', [rfReplaceAll])) * 10) / 100;
+      edtEntradaDnh.Text := FormatFloat('#,##0.00', LValor);
+  end;
+
+  edtEntradaDnh.SelStart := Length(edtEntradaDnh.Text) + 1;
+  Key := #0;
+end;
+
+procedure TfrmAbrirCaixa.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  frmDados.PdvLanc.Destroy;
+  Action := TCloseAction.caFree;
+end;
+
+procedure TfrmAbrirCaixa.FormCreate(Sender: TObject);
+begin
+  frmDados.PdvLanc := TPdvLanc.Create(frmDados.FDConnection);
+end;
+
+procedure TfrmAbrirCaixa.FormKeyPress(Sender: TObject; var Key: Char);
+begin
+  If key = #13 then
+    begin
+      if pnlBotAbrir.Focused then
+      begin
+        btnAbrirCaixa.Click;
+      end
+      else
+      begin
+        SelectNext(Screen.ActiveControl, True, True);
+      end;
+      Key := #0;
+    end;
+  end;
+
+procedure TfrmAbrirCaixa.pnlBotAbrirEnter(Sender: TObject);
+begin
+  pnlBotAbrir.Color := clHighlight;
+end;
+
+procedure TfrmAbrirCaixa.pnlBotAbrirExit(Sender: TObject);
+begin
+  pnlBotAbrir.Color := clTeal;
+end;
+
+end.

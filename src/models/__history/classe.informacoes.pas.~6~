@@ -1,0 +1,100 @@
+unit classe.informacoes;
+
+interface
+uses
+  FireDAC.Comp.Client,
+  FireDAC.DApt,
+  System.SysUtils,
+  unit_funcoes,
+  unit_globals,
+  Vcl.Forms;
+
+type
+  TInformacoes = class
+  private
+    FConexao      : TFDConnection;
+    FMsgErro      : string;
+    FCodInfo      : string;
+    FInfo1        : string;
+    FInfo2        : string;
+    FInfo3        : string;
+    FInfo4        : string;
+
+  public
+    property Conexao      : TFDConnection read FConexao write FConexao;
+    property MsgErro      : string read FMsgErro write FMsgErro;
+
+    property CodInfo      : string read FCodInfo write FCodInfo;
+    property Info1        : string read FInfo1 write FInfo1;
+    property Info2        : string read FInfo1 write FInfo2;
+    property Info3        : string read FInfo1 write FInfo3;
+    property Info4        : string read FInfo1 write FInfo4;
+
+    constructor Create(vConexao: TFDConnection);
+    destructor Destroy; override;
+
+    procedure prcFechar;
+    procedure prcAbrir;
+    procedure prcSQLInit;
+
+    function fncPegaInfo(sCodInfo: string; nNumInfo: Integer): string;
+  end;
+  var
+    QryConsulta : TFDQuery;
+
+
+implementation
+
+{ TInformacoes }
+
+constructor TInformacoes.Create(vConexao: TFDConnection);
+begin
+  FConexao := vConexao;
+  QryConsulta := TFDQuery.Create(nil);
+  QryConsulta.Connection := FConexao;
+end;
+
+destructor TInformacoes.Destroy;
+begin
+  QryConsulta.Destroy;
+  inherited;
+end;
+
+procedure TInformacoes.prcAbrir;
+var
+  lOk: Boolean;
+begin
+  try
+    try
+      FConexao.Connected := True;
+      lOk := True;
+    except on E: Exception do
+    begin
+      FMsgErro := E.Message;
+      lOk := False;
+    end;
+    end;
+  finally
+    gbServidorOk := lOk;
+  end;
+end;
+
+procedure TInformacoes.prcFechar;
+begin
+  FConexao.Connected := False;
+  gbServidorOk := False;
+end;
+
+procedure TInformacoes.prcSQLInit;
+begin
+  QryConsulta.Close;
+  QryConsulta.SQL.Clear;
+end;
+
+function TInformacoes.fncPegaInfo(sCodInfo: string; nNumInfo: Integer): string;
+begin
+
+end;
+
+
+end.

@@ -1,0 +1,368 @@
+unit classe.ticketitens;
+
+interface
+uses
+  entity.ticketitens,
+  FireDAC.Comp.Client,
+  FireDAC.DApt,
+  FireDAC.Stan.Intf,
+  System.SysUtils,
+  System.Generics.Collections,
+  System.Math,
+  unit_funcoes,
+  unit_globals,
+  Vcl.Forms;
+
+type
+  TTicketItens = class(TTicketItensEntity)
+
+  private
+    FMsgErro      : string;
+    FConexao      : TFDConnection;
+
+  public
+    property Conexao      : TFDConnection read FConexao write FConexao;
+    property MsgErro      : string read FMsgErro write FMsgErro;
+
+    constructor Create(vConexao : TFDConnection);
+    destructor Destroy; override;
+
+    procedure prcAbrir;
+    procedure prcFechar;
+    procedure prcSQLInit;
+    function fncPegaItensDoTicket(sNumTicket: string): TList<TTicketItensEntity>;
+    function fncProcuraItem(sNumTicket: string; sCodGrupo: string;
+      sCodProd:string): TList<TTicketItensEntity>;
+    function fncTotalizaTicket(sNumTicket: string): Currency;
+    function fncGravaItem(
+
+    ): Boolean;
+    function fncAtualizaDesc: Boolean;
+
+  end;
+  var
+    QryConsulta : TFDQuery;
+
+implementation
+
+{ TTicketItens }
+
+constructor TTicketItens.Create(vConexao: TFDConnection);
+begin
+  FConexao := vConexao;
+  QryConsulta := TFDQuery.Create(nil);
+  QryConsulta.Connection := FConexao;
+end;
+
+destructor TTicketItens.Destroy;
+begin
+  QryConsulta.Destroy;
+  inherited;
+end;
+
+procedure TTicketItens.prcAbrir;
+begin
+  try
+    try
+      FConexao.Connected := True;
+    except on E: Exception do
+      begin
+        FMsgErro      := E.Message;
+        gbServidorOk  := False;
+      end;
+    end;
+  finally
+    gbServidorOk := True;
+  end;
+end;
+
+procedure TTicketItens.prcFechar;
+begin
+  FConexao.Connected := False;
+  gbServidorOk := False;
+end;
+
+procedure TTicketItens.prcSQLInit;
+begin
+  QryConsulta.Close;
+  QryConsulta.SQL.Clear;
+end;
+
+
+function TTicketItens.fncAtualizaDesc: Boolean;
+var
+  lsCodProd: string;
+  liQuant, liQtdGrupo: Integer;
+  lcDescItem, lcDescItemCalc, lcDescGrupo, lcDescGrupoCalc: Currency;
+  lcValUnit: Currency;
+  lsAtiva1, lsAtiva2, lsAtiva3, lsAtivaGrp1, lsAtivaGrp2, lsAtivaGrp3: string;
+  liQtd1, liQtd2, liQtd3, liQtdGrp1, liQtdGrp2, liQtdGrp3: Integer;
+  lcVal1, lcVal2, lcval3, lcValGrp1, lcValGrp2, lcValGrp3: Currency;
+  lsDescGrupo: string;
+
+begin
+  Result := False;
+  try
+    prcFechar;
+    prcAbrir;
+
+    prcSQLInit;
+
+    QryConsulta.SQL.Add('SELECT ti.codprod, ti.qtd, sum(ti.qtd) as QtdGrp, ti.descun ');
+    QryConsulta.SQL.Add('ti.descgrp, ti.vlun, p.ativa1, p.qtd1, p.valunit1, ');
+    QryConsulta.SQL.Add('p.ativa2, p.qtd2, p.valunit2, ');
+    QryConsulta.SQL.Add('p.ativa3, p.qtd3, p.valunit3, ');
+    QryConsulta.SQL.Add('g.ativa1, g.qtd1, g.valunit1, ');
+    QryConsulta.SQL.Add('g.ativa2, g.qtd2, g.valunit2, ');
+    QryConsulta.SQL.Add('g.ativa3, g.qtd3, g.valunit3, ');
+    QryConsulta.SQL.Add('FROM ticketitens ti ');
+    QryConsulta.SQL.Add('INNER JOIN produtos p ');
+    QryConsulta.SQL.Add('ON ti.codgrupo = p.codgrupo AND ');
+    QryConsulta.SQL.Add('ti.codprod = p.codprod ');
+    QryConsulta.SQL.Add('INNER JOIN grupos g ');
+    QryConsulta.SQL.Add('ON ti.codgrupo = g.codgrupo ');
+    QryConsulta.SQL.Add('WHERE numticket = :pNumticket AND ');
+    QryConsulta.SQL.Add('codgrupo = :pCodGrupo AND ');
+    QryConsulta.SQL.Add('cancelado <> "*"');
+    QryConsulta.SQL.Add('ORDER BY codprod ASC');
+
+    QryConsulta.ParamByName('pNumticket').AsString := Self.numticket;
+    QryConsulta.ParamByName('pCodGrupo').AsString := Self.codgrupo;
+    QryConsulta.Open;
+
+    if QryConsulta.RecordCount > 0 then
+    begin
+      lcDescItemCalc  := 0;
+      lcDescGrupoCalc := 0;
+      while not QryConsulta.Eof do
+      begin
+        // Carrega dados nas variáveis locais
+        lsCodProd := QryConsulta.FieldByName('ti.codprod').AsString;
+        liQuant := QryConsulta.FieldByName('ti.qtd').AsInteger;
+        liQtdGrupo := QryConsulta.FieldByName('QtdGrp').AsInteger;
+        lcDescItem := QryConsulta.FieldByName('ti.descun').AsCurrency;
+        lcDescGrupo := QryConsulta.FieldByName('ti.desgrp').AsCurrency;
+        lcValUnit := QryConsulta.FieldByName('ti.vlun').AsCurrency;
+        lsAtiva1 := QryConsulta.FieldByName('p.ativa1').AsString;
+        liQtd1 := QryConsulta.FieldByName('p.qtd1').AsInteger;
+        lcVal1 := QryConsulta.FieldByName('p.valunit1').AsCurrency;
+        lsAtiva2 := QryConsulta.FieldByName('p.ativa2').AsString;
+        liQtd2 := QryConsulta.FieldByName('p.qtd2').AsInteger;
+        lcVal2 := QryConsulta.FieldByName('p.valunit2').AsCurrency;
+        lsAtiva3 := QryConsulta.FieldByName('p.ativa3').AsString;
+        liQtd3 := QryConsulta.FieldByName('p.qtd3').AsInteger;
+        lcVal3 := QryConsulta.FieldByName('p.valunit3').AsCurrency;
+        lsAtivaGrp1 := QryConsulta.FieldByName('g.ativa1').AsString;
+        liQtdGrp1 := QryConsulta.FieldByName('g.qtd1').AsInteger;
+        lcValGrp1 := QryConsulta.FieldByName('g.valunit1').AsCurrency;
+        lsAtivaGrp2 := QryConsulta.FieldByName('g.ativa2').AsString;
+        liQtdGrp2 := QryConsulta.FieldByName('g.qtd2').AsInteger;
+        lcValGrp2 := QryConsulta.FieldByName('g.valunit2').AsCurrency;
+        lsAtivaGrp3 := QryConsulta.FieldByName('g.ativa3').AsString;
+        liQtdGrp3 := QryConsulta.FieldByName('g.qtd3').AsInteger;
+        lcValGrp3 := QryConsulta.FieldByName('g.valunit3').AsCurrency;
+
+        // Lógica do cálculo
+        if (lsAtivaGrp1 = '*') or (lsAtivaGrp2 = '*') or (lsAtivaGrp3 = '*') then
+        begin
+          if (liQtdGrupo >= liQtdGrp3) and (lcvalGrp3 < lcValUnit) and (lsAtivaGrp3 = '*') then
+            lcDescGrupoCalc := lcDescGrupoCalc - (lcvalGrp3 - lcValUnit) * liQuant
+          else if (liQtdGrupo >= liQtdGrp2) and (lcvalGrp2 < lcValUnit) and (lsAtivaGrp2 = '*') then
+            lcDescGrupoCalc := lcDescGrupoCalc - (lcvalGrp2 - lcValUnit) * liQuant
+          else if (liQtdGrupo >= liQtdGrp1) and (lcvalGrp1 < lcValUnit) and (lsAtivaGrp1 = '*') then
+            lcDescGrupoCalc := lcDescGrupoCalc - (lcvalGrp1 - lcValUnit) * liQuant
+        end
+        else
+        begin
+          if (liQuant >= liQtd3) and (lsAtiva3 = '*') then
+            lcDescItemCalc := (lcVal3 - lcValUnit) * liQuant
+          else if (liQuant >= liQtd2) and (lsAtiva2 = '*') then
+            lcDescItemCalc := (lcValUnit - lcVal2) * liQuant
+          else if (liQuant >= liQtd1) and (lsAtiva1 = '*') then
+            lcDescItemCalc := (lcValUnit - lcVal1) * liQuant
+          else
+            lcDescItemCalc := 0;
+
+          if lcDescItemCalc <> lcDescItem then
+          begin
+            //Atualiza a tabela TicketItens
+            prcFechar;
+            prcAbrir;
+
+            prcSQLInit;
+
+            try
+              QryConsulta.SQL.add('UPDATE ticketitens ');
+              QryConsulta.SQL.add('SET descun = :pDescun ');
+              QryConsulta.SQL.Add('WHERE numticket = :pNumticket AND ');
+              QryConsulta.SQL.Add('codgrupo = :pCodGrupo AND ');
+              QryConsulta.SQL.Add('codprod = :pCodProd AND ');
+              QryConsulta.SQL.Add('cancelado <> "*"');
+              QryConsulta.ParamByName('pNumticket').AsString := sNumTicket;
+              QryConsulta.ParamByName('pCodGrupo').AsString := sCodGrupo;
+              QryConsulta.ParamByName('pCodProd').AsString := lsCodProd;
+              QryConsulta.ParamByName('pDescun').AsCurrency := lcDescItemCalc;
+              QryConsulta.ExecSQL;
+            except
+              Result := False;
+              Exit;
+            end;
+
+          end;
+
+        end;
+
+      end;
+      if lcDescGrupoCalc <> lcDescGrupo then
+      begin
+        //Atualiza tabela TicketIens
+        prcFechar;
+        prcAbrir;
+
+        prcSQLInit;
+
+        try
+          QryConsulta.SQL.add('UPDATE ticketitens ');
+          QryConsulta.SQL.add('SET descgrp = :pDescgrp ');
+          QryConsulta.SQL.Add('WHERE numticket = :pNumticket AND ');
+          QryConsulta.SQL.Add('codgrupo = :pCodGrupo AND ');
+          QryConsulta.SQL.Add('codprod = :pCodProd AND ');
+          QryConsulta.SQL.Add('cancelado <> "*"');
+          QryConsulta.ParamByName('pNumticket').AsString := sNumTicket;
+          QryConsulta.ParamByName('pCodGrupo').AsString := sCodGrupo;
+          QryConsulta.ParamByName('pCodProd').AsString := lsCodProd;
+          QryConsulta.ParamByName('pDescgrp').AsCurrency := lcDescGrupoCalc;
+          QryConsulta.ExecSQL;
+        except
+          Result := False;
+          Exit;
+        end;
+      end;
+      Result := True;
+    end;
+  finally
+  end;
+end;
+
+function TTicketItens.fncGravaItem: Boolean;
+begin
+  Result := False;
+end;
+
+function TTicketItens.fncPegaItensDoTicket(sNumTicket: string): TList<TTicketItensEntity>;
+var
+  LstLista: TList<TTicketItensEntity>;
+  TDados: TTicketItensEntity;
+begin
+  LstLista := TList<TTicketItensEntity>.Create;
+  try
+    prcFechar;
+    prcAbrir;
+
+    prcSQLInit;
+
+    QryConsulta.SQL.Add('SELECT * ');
+    QryConsulta.SQL.Add('FROM ticketitens ');
+    QryConsulta.SQL.Add('WHERE numticket = :pNumticket AND ');
+    QryConsulta.SQL.Add('cancelado <> "*"');
+    QryConsulta.SQL.Add('ORDER BY codgrupo ASC, codprod ASC');
+
+    QryConsulta.ParamByName('pNumticket').AsString := sNumTicket;
+    QryConsulta.Open;
+
+    while not QryConsulta.Eof do
+    begin
+      TDados := TTicketItensEntity.Create;
+      try
+        TDados.numticket    := QryConsulta.FieldByName('numticket').AsString;
+        TDados.codgrupo     := QryConsulta.FieldByName('codgrupo').AsString;
+        TDados.codprod      := QryConsulta.FieldByName('codprod').AsString;
+        TDados.descr        := QryConsulta.FieldByName('descr').AsString;
+        TDados.qtd          := QryConsulta.FieldByName('qtd').AsInteger;
+        TDados.und          := QryConsulta.FieldByName('und').AsString;
+        TDados.vlun         := QryConsulta.FieldByName('vlun').AsCurrency;
+        TDados.descun       := QryConsulta.FieldByName('descun').AsCurrency;
+        TDados.descresp     := QryConsulta.FieldByName('descresp').AsString;
+        LstLista.Add(TDados);
+      except
+        TDados.Free;
+      end;
+      QryConsulta.Next;
+    end;
+  finally
+    Result := LstLista;
+  end;
+end;
+
+function TTicketItens.fncProcuraItem(sNumTicket, sCodGrupo,
+  sCodProd: string): TList<TTicketItensEntity>;
+var
+  LstLista: TList<TTicketItensEntity>;
+  TDados: TTicketItensEntity;
+begin
+  LstLista := TList<TTicketItensEntity>.Create;
+
+  try
+    prcFechar;
+    prcAbrir;
+
+    prcSQLInit;
+
+    QryConsulta.SQL.Add('SELECT * ');
+    QryConsulta.SQL.Add('FROM ticketitens ');
+    QryConsulta.SQL.Add('WHERE numticket = :pNumticket AND ');
+    QryConsulta.SQL.Add('codgrupo = :pCodGrupo AND ');
+    QryConsulta.SQL.Add('codprod = :pCodProd AND ');
+    QryConsulta.SQL.Add('cancelado <> "*"');
+    QryConsulta.ParamByName('pNumticket').AsString := sNumTicket;
+    QryConsulta.ParamByName('pCodGrupo').AsString := sCodGrupo;
+    QryConsulta.ParamByName('pCodProd').AsString := sCodProd;
+    QryConsulta.Open;
+
+    TDados := TTicketItensEntity.Create;
+    try
+      TDados.numticket    := QryConsulta.FieldByName('numticket').AsString;
+      TDados.codgrupo     := QryConsulta.FieldByName('codgrupo').AsString;
+      TDados.codprod      := QryConsulta.FieldByName('codprod').AsString;
+      TDados.descr        := QryConsulta.FieldByName('descr').AsString;
+      TDados.qtd          := QryConsulta.FieldByName('qtd').AsInteger;
+      TDados.und          := QryConsulta.FieldByName('und').AsString;
+      TDados.vlun         := QryConsulta.FieldByName('vlun').AsCurrency;
+      TDados.descun       := QryConsulta.FieldByName('descun').AsCurrency;
+      TDados.descresp     := QryConsulta.FieldByName('descresp').AsString;
+      LstLista.Add(TDados);
+    except
+      TDados.Free;
+    end;
+  finally
+    Result := LstLista;
+  end;
+end;
+
+function TTicketItens.fncTotalizaTicket(sNumTicket: string): Currency;
+var
+  lcValTotItens, lcTotDescItem, lcTotDescGrp: Currency;
+begin
+  try
+    prcFechar;
+    prcAbrir;
+
+    prcSQLInit;
+
+    QryConsulta.SQL.Add('SELECT SUM(qtd*vlun) as valtotitens, ');
+    QryConsulta.SQL.Add('SUM(descun) as totdescitem, SUM(descgrp) as totdescgrp ');
+    QryConsulta.SQL.Add('FROM ticketitens ');
+    QryConsulta.SQL.Add('WHERE numticket = :pNumticket AND ');
+    QryConsulta.SQL.Add('cancelado <> "*"');
+    QryConsulta.ParamByName('pNumticket').AsString := sNumTicket;
+    QryConsulta.Open;
+
+    lcValTotItens := QryConsulta.FieldByName('valtotitens').AsCurrency;
+    lcTotDescItem := QryConsulta.FieldByName('totdescitem').AsCurrency;
+    lcTotDescGrp := QryConsulta.FieldByName('totdescgrp').AsCurrency;
+  finally
+    Result := lcValTotItens+lcTotDescItem+lcTotDescGrp;
+  end;
+end;
+
+end.
